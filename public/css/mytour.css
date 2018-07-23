@@ -239,3 +239,70 @@ a {
     display: block;
     padding: 5px;
 }
+
+#gotoTop {
+    background-color: red;
+}
+
+.comment-content .comment-author span{
+    display:inline-block;
+}
+
+.comment-avatar {
+    top: 0px;
+}
+
+.comment-wrap{
+    padding: 8px 25px;
+}
+
+.commentlist li ul li {
+    margin: 5px 0 0;
+}
+
+.reply-comment{
+    margin: 10px 0 0 60px;
+    font-size: 1.6em;
+}
+
+.entry{
+    margin: 0 0 20px;
+}
+
+#comments {
+    margin-top: 30px;
+    padding-top: 30px;
+}
+.reply-comment i{
+    margin-left: 5px;
+}
+
+.commentlist ul .comment-wrap {
+    margin-left: 35px;
+    padding-left: 20px;
+}
+
+.commentlist li .comment-content p, .pingback p {
+    margin: 10px 0 0 10px;
+}
+
+.commentlist li {
+    margin: 10px 0 0 30px;
+}
+
+.comment .col_full{
+    margin-bottom: 0px;
+}
+
+.commentlist {
+    margin-bottom: 0px;
+    padding-bottom: 30px;
+}
+
+#respond h3{
+    margin-bottom: 10px;
+}
+
+.formReply {
+    margin-bottom: 0px;
+}

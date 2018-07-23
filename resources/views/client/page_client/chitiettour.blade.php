@@ -47,6 +47,7 @@
                             <div class="col-sm-12">			
                                 <ul class="nav nav-tabs">		
                                     <li><a href="#thongtinhdv" data-toggle="tab" id="tthdv">Hướng dẫn viên</a></li>
+                                    <li><a href="#comments" data-toggle="tab" id="bl">Bình luận</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -75,6 +76,7 @@
                             </span>
                             <span><a href="{{route('tour_hdv', $cttour->users->id)}}">Xem các tour khác của hướng dẫn viên</a></span>
                         </div>
+                        @include('client.page_client.binhluan')
                     </div>
                 </div>    
                 @include('client.page_client.tourlienquan')    

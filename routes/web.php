@@ -23,3 +23,6 @@ Route::get('tour-dia-diem/{iddd}', ['as' => 'tour-dia-diem', 'uses' => 'PageCont
 Route::get('tour-cua-hdv/{idhdv}', ['as' => 'tour_hdv', 'uses' => 'PageController@getTourCuaHdv']);
 
 Route::get('chi-tiet/{id}', ['as' => 'chi-tiet', 'uses' => 'TourController@show']);
+
+//xu ly ajax
+Route::post('binhluan', 'AjaxController@postBinhLuan');

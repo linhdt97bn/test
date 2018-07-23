@@ -5,6 +5,11 @@
         <title>Tour</title>
         <base href="{{asset('')}}">
 
+        <script src='https://cdn.rawgit.com/matthieua/WOW/1.0.1/dist/wow.min.js'></script>
+        <script>
+            new WOW().init();
+        </script>
+
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
         <link rel="stylesheet" href="css/font-awesomes.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-icons.css" type="text/css">

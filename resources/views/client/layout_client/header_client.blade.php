@@ -13,6 +13,11 @@
                     <li class="current"><a><div>Liên hệ</div></a></li>
 
                     <li class="current"><a><div>Địa điểm</div></a>
+                        <ul>
+                            @foreach($diadiem as $dd)
+                                <li><a href="{{route('tour-dia-diem', $dd->id)}}"><div>{{$dd->tendiadiem}}</div></a></li>
+                            @endforeach
+                        </ul>
                     </li>
 
                     @if(Auth::check())

@@ -9,13 +9,15 @@ use App\Http\Requests\DangNhapRequest;
 use App\User;
 use Hash;
 use Auth;
+use App\Tour;
 
 class PageController extends Controller
 {
     
     public function getTrangChu()
     {
-        return view('client.page_client.trangchu');
+        $tour=Tour::where('trangthaitour', 1)->paginate(12);
+        return view('client.page_client.trangchu', compact('tour'));
     }
 
     public function postDangKyKhach(DangKyKhachRequest $req)
@@ -87,5 +89,17 @@ class PageController extends Controller
     {
         Auth::logout();
         return redirect()->route('trang-chu');
+    }
+
+    public function getTourDiaDiem($iddd)
+    {
+        $tourdd = Tour::where([['place_id', $iddd], ['trangthaitour', 1]])->paginate(12);
+        return view('client.page_client.danhsachtour', compact('tourdd'));
+    } 
+
+    public function getTourCuaHdv($idhdv)
+    {
+        $tourhdv = Tour::where([['users_id', $idhdv], ['trangthaitour', 1]])->paginate(12);
+        return view('client.page_client.danhsachtour', compact('tourhdv'));
     }
 }

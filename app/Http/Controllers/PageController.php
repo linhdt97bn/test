@@ -12,6 +12,7 @@ use Hash;
 use Auth;
 use App\Tour;
 use App\Bill;
+use App\Rate;
 
 class PageController extends Controller
 {
@@ -131,5 +132,17 @@ class PageController extends Controller
     {
         $lichsu = Bill::where('users_id', Auth::user()->id)->paginate(10);
         return view('client.page_client.lichsudattour', compact('lichsu'));
+    }
+
+    public function DanhGia($idtour, Request $request)
+    {
+        if($request->sodiem == 0) return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
+
+        $rate = new Rate();
+        $rate->tour_id = $idtour;
+        $rate->users_id = Auth::user()->id;
+        $rate->sodiem = $request->sodiem;
+        $rate->save();
+        return redirect()->back()->with('successRate', 'Cảm ơn bạn đã đánh giá tour');
     }
 }

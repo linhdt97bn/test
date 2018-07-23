@@ -29,5 +29,7 @@ Route::get('lich-su-dat-tour', ['as' => 'lich-su', 'uses' => 'PageController@get
 
 Route::resource('payment', 'PaymentController', ['only' => ['create', 'store']]);
 
+Route::post('danh-gia/{idtour}', ['as' => 'danh-gia', 'uses' => 'PageController@DanhGia']);
+
 //xu ly ajax
 Route::post('binhluan', 'AjaxController@postBinhLuan');

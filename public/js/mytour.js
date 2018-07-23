@@ -22,13 +22,40 @@ $(document).ready(function() {
 
     $('#bl').click(function(){  
         $('#thongtinhdv').hide();
+        $('#danhgia').hide();
         $('#comments').show();
-    })
+    });
 
     $('#tthdv').click(function(){
         $('#comments').hide();
+        $('#danhgia').hide();
         $('#thongtinhdv').show();
-    })
+    });
+
+    $('#dg').click(function(){
+        $('#comments').hide();
+        $('#thongtinhdv').hide();
+        $('#danhgia').show();
+    });
+
+    $('.glyphicon-star').click(function(){
+        danhgia = $(this).attr('id');
+        for(var i = 1; i <= 5; i++){
+            dg = '#dg' + i;
+            if(i <= danhgia[2]){        
+                $(dg).css('color', 'yellow');
+            }else{
+                $(dg).css('color', '#DDDDDD');
+            }
+        }
+        $('#sodiemdanhgia').val(danhgia[2]);
+    });
+
+    if($('div').hasClass('successRate')){
+        alert('Cảm ơn bạn đã đánh giá tour.');
+    }else if($('div').hasClass('errorRate')){
+        alert('Lỗi đánh giá.');
+    }
 
     $('.tlbl').click(function(){
         traloi = $(this).attr('href');

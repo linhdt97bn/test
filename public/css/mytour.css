@@ -18,7 +18,7 @@ a {
     padding-right: 0; 
 }
 
-.modal-dangky, .modal-dangnhap, .modal-dattour {
+.modal-dangky, .modal-dangnhap, .modal-dattour, .modal-suathongtin {
     float: right; 
     padding: 3px 20px; 
     font-weight: bold;
@@ -47,16 +47,16 @@ a {
     margin-top: 7px
 }
 
-.form-dangky fieldset, .form-dangnhap fieldset, .form-dattour fieldset {
+.form-dangky fieldset, .form-dangnhap fieldset, .form-dattour fieldset, .form-suathongtin fieldset {
     color: blue; 
 }
 
-.form-dangky span, .form-dangnhap span, .form-dattour span {
+.form-dangky span, .form-dangnhap span, .form-dattour span, .form-suathongtin span {
     color: red; 
     margin-left: 20px;
 }
 
-#btnKhach, #btnHDV, #btnDangNhap, #btnDatTour {
+#btnKhach, #btnHDV, #btnDangNhap, #btnDatTour, #btnSuaThongTin {
     width: 20%;
     margin-top: 15px;
 }
@@ -453,4 +453,42 @@ a {
 
 .boxRatingCmt .crt .rcrt .r{
     padding:1px 20px
+}
+
+#divtimkiem {
+    position: fixed; 
+    z-index: 10; 
+    width: 100%; 
+    background-color: white; 
+    font-size: 2em; 
+    display: none;
+}
+
+#divtimkiem ul {
+    padding: 20px 50px; 
+    list-style: none;
+    font-size: 17px;
+}
+
+#divtimkiem ul .dskq {
+    padding: 5px;
+}
+
+#divtimkiem ul .dskq img{
+    height: 50px; 
+    width: 50px; 
+    float: left;
+    margin-right: 10px;
+}
+
+#top-search{
+    margin-left: 0px;
+}
+
+#top-search-trigger .icon-search3{
+    font-size: 25px;
+}
+
+#top-search-trigger .icon-line-cross{
+    font-size: 25px;
 }

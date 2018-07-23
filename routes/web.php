@@ -29,7 +29,10 @@ Route::get('lich-su-dat-tour', ['as' => 'lich-su', 'uses' => 'PageController@get
 
 Route::resource('payment', 'PaymentController', ['only' => ['create', 'store']]);
 
-Route::post('danh-gia/{idtour}', ['as' => 'danh-gia', 'uses' => 'PageController@DanhGia']);
+Route::post('danh-gia/{idtour}', ['as' => 'danh-gia', 'uses' => 'PageController@getDanhGia']);
+Route::post('sua-thong-tin', ['as' => 'sua-thong-tin', 'uses' => 'PageController@postSuaThongTin']);
+Route::get('tim-kiem', ['as' => 'tim-kiem', 'uses' => 'PageController@getTimKiem']);
 
 //xu ly ajax
 Route::post('binhluan', 'AjaxController@postBinhLuan');
+Route::post('timkiem', 'AjaxController@postTimKiem');

@@ -66,6 +66,37 @@
                     @endforeach
                 </div>
                 <div class="row text-center paginate">{{$tourhdv->links()}}</div>
+            @elseif(isset($tourtimkiem))
+            <div class="row">
+                <?php $j = 0; ?>
+                @foreach($tourtimkiem as $ttk)
+                    <?php $j += 0.1; ?>
+                    <div class="col-md-3 col-sm-4 wow zoomIn" data-wow-delay="<?php echo $j; ?>s">
+                        <div class="tour_container">
+                            <div class="img_container">
+                                <a href="{{route('chi-tiet', $ttk->id)}}">
+                                    <img src="upload/{{$ttk->hinhanh}}" width="360" height="250" class="img-responsive">
+                                    <span class="price">{{number_format($ttk->giatour)}}<sup>VND</sup></span>
+                                </a>
+                            </div>
+                            <div class="tour_title">
+                                <h3>{{$ttk->tentour}}</h3>
+                                <div class="rating">
+                                    @for($k = 0; $k < 5; $k++)
+                                        @if($k < $ttk->rate->avg('sodiem'))
+                                            <i class="icon-smile voted"></i>
+                                        @else
+                                            <i class="icon-smile"></i>
+                                        @endif
+                                    @endfor
+                                    <span>({{$ttk->rate->count()}} lượt đánh giá)</span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="row text-center paginate">{{$tourtimkiem->links()}}</div>
             @endif
         </div>
     </div>

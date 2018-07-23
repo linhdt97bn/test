@@ -9,7 +9,7 @@
             <nav id="primary-menu">
                 <ul>
                     <li class="current"><a href="{{route('trang-chu')}}"><div>Trang chủ</div></a></li>
-                    <li class="current"><a><div>Quy định</div></a></li>
+                    <li class="current"><a data-toggle="modal" data-target="#QuyDinh"><div>Quy định</div></a></li>
                     <li class="current"><a><div>Liên hệ</div></a></li>
 
                     <li class="current"><a><div>Địa điểm</div></a>
@@ -27,6 +27,7 @@
                                 {{Auth::user()->hoten}}
                             </a>
                             <ul>    
+                                <li><a data-toggle="modal" data-target="#SuaThongTin"><div>Sửa thông tin cá nhân</div></a></li>
                                 @if(Auth::user()->quyen == 1)
                                     <li><a href="{{route('lich-su')}}"><div>Lịch sử đặt tour</div></a></li>
                                 @elseif(Auth::user()->quyen == 2)
@@ -50,7 +51,7 @@
 
                 <div id="top-search">
                     <a id="top-search-trigger"><i class="icon-search3"></i><i class="icon-line-cross"></i></a>
-                    <form action="#" method="get">
+                    <form action="{{ route('tim-kiem') }}" method="get">
                         <input type="hidden" id="hiddenSearch" name="_token" value="{{csrf_token()}}">
                         <input type="text" id="timkiem" name="timkiem" class="form-control" placeholder="Nhập thông tin tìm kiếm">
                     </form>
@@ -59,3 +60,7 @@
         </div>
     </div>
 </header>
+<div id="divtimkiem">
+    <ul id="dsketqua">
+    </ul>
+</div>

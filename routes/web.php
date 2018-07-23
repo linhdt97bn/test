@@ -27,5 +27,7 @@ Route::get('chi-tiet/{id}', ['as' => 'chi-tiet', 'uses' => 'TourController@show'
 Route::post('dat-tour/{idtour}', ['as' => 'dat-tour', 'uses' => 'PageController@postDatTour'])->middleware('CheckKhach');
 Route::get('lich-su-dat-tour', ['as' => 'lich-su', 'uses' => 'PageController@getLichSu'])->middleware('CheckKhach');
 
+Route::resource('payment', 'PaymentController', ['only' => ['create', 'store']]);
+
 //xu ly ajax
 Route::post('binhluan', 'AjaxController@postBinhLuan');

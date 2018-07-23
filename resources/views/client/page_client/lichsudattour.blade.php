@@ -44,7 +44,15 @@
                             </td>
                             <td class="cart-product-subtotal">
                                 <span class="amount">
-                                    
+                                    @if($ls->tinhtrangdon == 1)
+                                    <form action="{{url('payment')}}" method="POST" role="form" style="margin-bottom: 0px">
+                                        {{csrf_field()}}
+                                        <input type="hidden" name="idbill" value="{{$ls->id}}">
+                                        <input type="hidden" name="tentour" value="{{$ls->tour->tentour}}">
+                                        <input type="hidden" name="tongtien" value="{{$ls->tongtien}}">
+                                        <button type="submit" class="btn">Thanh toán</button>
+                                    </form>
+                                    @endif
                                 </span>
                             </td>
                         </tr>

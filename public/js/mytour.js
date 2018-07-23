@@ -16,6 +16,10 @@ $(document).ready(function() {
         alert('Đặt tour thành công.');
     }
 
+    if($('div').hasClass('thanhcongTT')){
+        alert('Thanh toán thành công.');
+    }
+
     $('#bl').click(function(){  
         $('#thongtinhdv').hide();
         $('#comments').show();

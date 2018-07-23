@@ -144,3 +144,61 @@
         </div>
     </div>
 </div>
+
+@if(Auth::check())
+    @if(isset($cttour))
+    <div class="modal" id="DatTour">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="btn btn-danger modal-dattour" data-dismiss="modal">X</button>
+                <div class="modal-header">  
+                    <div align="center">Đặt Tour</div>
+                </div>
+                @if(Session::has('successDatTour'))
+                    <div class="alert alert-success text-center successDatTour">{{Session::get('successDatTour')}}</div>
+                @endif
+                @if((count($errors) > 0 && Session::has('errorDatTour')) || Session::has('loiKhachMax') || Session::has('loiThoiGian') )
+                    <div class="loiDatTour"></div>
+                @endif
+
+                <div class="modal-body">
+                    <form action="{{route('dat-tour', $cttour->id)}}" method="POST" class="form-dattour">
+                        <fieldset>
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+
+                            <label>Tên tour</label>
+                            <input type="text" class="form-control" readonly="" name="tentour" value="{{$cttour->tentour}}">
+
+                            <label>Địa điểm</label>
+                            <input type="text" class="form-control" readonly="" name="tendiadiem" value="{{$cttour->place->tendiadiem}}">
+                                
+                            <label>Giá tiền</label>
+                            <input type="text" class="form-control" readonly="" name="giatour" value="{{$cttour->giatour}}">
+
+                            <label>Thời gian bắt đầu</label>
+                            <span>
+                                {{$errors->first('thoigianbatdau')}}
+                                @if(session('loiThoiGian'))
+                                    {{Session::get('loiThoiGian')}}
+                                @endif
+                            </span>
+                            <input type="date" class="form-control" name="thoigianbatdau" value="{{old('thoigianbatdau')}}">
+                                
+                            <label>Số lượng khách đăng ký</label>
+                            <span>
+                                {{$errors->first('sokhachdangky')}}
+                                @if(session('loiKhachMax'))
+                                    {{Session::get('loiKhachMax')}}
+                                @endif
+                            </span>         
+                            <input type="text" class="form-control" name="sokhachdangky"  value="{{old('sokhachdangky')}}">
+
+                            <div align="center"><button type="submit" class="btn btn-lg btn-success btn-block" id="btnDatTour">Đặt tour</button></div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+@endif

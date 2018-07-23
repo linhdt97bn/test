@@ -18,7 +18,7 @@ a {
     padding-right: 0; 
 }
 
-.modal-dangky, .modal-dangnhap {
+.modal-dangky, .modal-dangnhap, .modal-dattour {
     float: right; 
     padding: 3px 20px; 
     font-weight: bold;
@@ -47,16 +47,16 @@ a {
     margin-top: 7px
 }
 
-.form-dangky fieldset, .form-dangnhap fieldset {
+.form-dangky fieldset, .form-dangnhap fieldset, .form-dattour fieldset {
     color: blue; 
 }
 
-.form-dangky span, .form-dangnhap span {
+.form-dangky span, .form-dangnhap span, .form-dattour span {
     color: red; 
     margin-left: 20px;
 }
 
-#btnKhach, #btnHDV, #btnDangNhap {
+#btnKhach, #btnHDV, #btnDangNhap, #btnDatTour {
     width: 20%;
     margin-top: 15px;
 }
@@ -305,4 +305,9 @@ a {
 
 .formReply {
     margin-bottom: 0px;
+}
+
+.post-navigation a em {
+    position: relative;
+    top: 0px;
 }

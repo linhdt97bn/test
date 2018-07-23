@@ -9,6 +9,13 @@ $(document).ready(function() {
         $('#DangNhap').modal();
     }
 
+    if($('div').hasClass('loiDatTour')){
+        $('#DatTour').modal();
+    }
+    if($('div').hasClass('successDatTour')){
+        alert('Đặt tour thành công.');
+    }
+
     $('#bl').click(function(){  
         $('#thongtinhdv').hide();
         $('#comments').show();

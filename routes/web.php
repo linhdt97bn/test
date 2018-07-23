@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', ['as' => 'trang-chu', 'uses' => 'PageController@getTrangChu']);
+
+Route::post('dang-ky-khach', ['as' => 'dang-ky-khach', 'uses' => 'PageController@postDangKyKhach']);
+Route::post('dang-ky-hdv', ['as' => 'dang-ky-hdv', 'uses' => 'PageController@postDangKyHDV']);
+Route::post('dang-nhap', ['as' => 'dang-nhap', 'uses' => 'PageController@postDangNhap']);
+Route::get('dang-xuat', ['as' => 'dang-xuat', 'uses' => 'PageController@getDangXuat']);

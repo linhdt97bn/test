@@ -1,0 +1,75 @@
+body {
+    font-size: 14px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.current a{
+    border-left: 1px solid #eee;
+}
+
+#primary-menu ul>li {
+    margin-left: 0;
+}
+
+#header.full-header #primary-menu>ul {
+    padding-right: 0; 
+}
+
+.modal-dangky, .modal-dangnhap {
+    float: right; 
+    padding: 3px 20px; 
+    font-weight: bold;
+}
+
+.modal-header {
+    background-color: #66FFFF;
+}
+
+.modal-header div {
+    font-size: 32px; 
+    font-weight: bold; 
+    color: red;
+}
+
+.modal-body {
+    padding-bottom: 0px;
+}
+
+.modal-content label {
+    color: blue;
+    text-transform: lowercase;
+    font-size: 16px;
+    margin-bottom: 0px;
+    font-style: italic;
+    margin-top: 7px
+}
+
+.form-dangky fieldset, .form-dangnhap fieldset {
+    color: blue; 
+}
+
+.form-dangky span, .form-dangnhap span {
+    color: red; 
+    margin-left: 20px;
+}
+
+#btnKhach, #btnHDV, #btnDangNhap {
+    width: 20%;
+    margin-top: 15px;
+}
+
+#ghinho {
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#primary-menu .user{
+    padding: 20px 15px;
+}
+
+.current:hover {
+    background-color: #FFEFDB;
+}

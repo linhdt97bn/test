@@ -10,6 +10,6 @@ class Place extends Model
 
     public function tour()
     {
-        return $this->hasMany('App\Tour');
+        return $this->hasMany('App\Tour','place_id','id');
     }
 }

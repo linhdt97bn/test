@@ -1,7 +1,7 @@
 @extends('client.layout_client.master_client')
 
 @section('content')
-<section id="content">
+<section id="content" style="background-image: url('upload/starsolid.gif')">
     <div class="content-wrap">
         <div class="container">
             @if(isset($tour))

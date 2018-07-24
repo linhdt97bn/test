@@ -53,7 +53,6 @@
                     <div class="col_full formReply" id="formReply-{{$comment->id}}" style="display: none">
                         <textarea name="reply" id="noidungReply" cols="58" rows="4" tabindex="4" class="sm-form-control"></textarea>
                         <input type="hidden" name="_token" id="tokenReply" value="{{csrf_token()}}">
-                        <input type="hidden" name="users_id" id="userReply" value="{{Auth::user()->id}}">
                         <input type="hidden" name="tour_id" id="tourReply" value="{{$cttour->id}}">
                         <button id="btnReply-{{$comment->id}}" tabindex="5" class="button button-3d btnReply">Reply</button>
                     </div>
@@ -72,7 +71,6 @@
             <div class="col_full">
                 <textarea name="comment" id="noidungComment" cols="58" rows="5" tabindex="4" class="sm-form-control"></textarea>
                 <input type="hidden" name="_token" id="tokenComment" value="{{csrf_token()}}">
-                <input type="hidden" name="users_id" id="userComment" value="{{Auth::user()->id}}">
                 <input type="hidden" name="tour_id" id="tourComment" value="{{$cttour->id}}">
             </div>
             <div class="col_full nobottommargin">

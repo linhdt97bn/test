@@ -3,14 +3,20 @@
 @section('content')
 <section id="content">
     <div class="content-wrap">
-        <div class="container clearfix">
             <div class="table-responsive">
+                @if(Session::has('loiThanhToan'))
+                    <div class="alert alert-danger text-center">{{Session::get('loiThanhToan')}}</div>
+                @elseif(Session::has('thanhcongTT'))
+                    <div class="alert alert-success text-center">{{Session::get('thanhcongTT')}}</div>
+                @endif
                 <table class="table cart">
                     <thead>
                         <tr>
                             <th class="cart-product-thumbnail">&nbsp;</th>
                             <th class="cart-product-name">Tên tour</th>
                             <th class="cart-product-price">Tổng tiền</th>
+                            <th class="cart-product-price">Ngày đi</th>
+                            <th class="cart-product-price">Số người đi</th>
                             <th class="cart-product-quantity">Trạng thái</th>
                             <th class="cart-product-subtotal">&nbsp;</th>
                         </tr>
@@ -26,6 +32,12 @@
                             </td>
                             <td class="cart-product-price">
                                 <span class="amount">{{ number_format($ls->tongtien) }} VNĐ</span>
+                            </td>
+                            <td class="cart-product-price">
+                                <span class="amount" id="time-start-{{$ls->id}}">{{ $ls->thoigianbatdau }}</span>
+                            </td>
+                            <td class="cart-product-price">
+                                <span class="amount" id="quantity-customer-{{$ls->id}}">{{$ls->sokhachdangky}}</span>
                             </td>
                             <td class="cart-product-quantity">
                                 <div class="quantity clearfix">
@@ -48,20 +60,20 @@
                                     <form action="{{url('payment')}}" method="POST" role="form" style="margin-bottom: 0px">
                                         {{csrf_field()}}
                                         <input type="hidden" name="idbill" value="{{$ls->id}}">
-                                        <input type="hidden" name="tentour" value="{{$ls->tour->tentour}}">
-                                        <input type="hidden" name="tongtien" value="{{$ls->tongtien}}">
                                         <button type="submit" class="btn">Thanh toán</button>
                                     </form>
+                                    @elseif($ls->tinhtrangdon == 0)
+                                    <button type="submit" class="btn edit-bill" id="edit-bill-{{$ls->id}}">Sửa</button>
                                     @endif
                                 </span>
                             </td>
                         </tr>
                     @endforeach
+                    <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="row paginate text-center">{{ $lichsu->links() }}</div>
+            <div class="row paginate text-center">{{ $lichsu->links() }}</div>
     </div>
 </section>
 @endsection

@@ -157,7 +157,10 @@
                 @if(Session::has('successDatTour'))
                     <div class="alert alert-success text-center successDatTour">{{Session::get('successDatTour')}}</div>
                 @endif
-                @if((count($errors) > 0 && Session::has('errorDatTour')) || Session::has('loiKhachMax') || Session::has('loiThoiGian') )
+                @if(Session::has('loiDonTour'))
+                    <div class="alert alert-danger text-center loiDatTour">{{Session::get('loiDonTour')}}</div>
+                @endif
+                @if((count($errors) > 0 && Session::has('errorDatTour')) || Session::has('loiKhachMax') || Session::has('loiThoiGian'))
                     <div class="loiDatTour"></div>
                 @endif
 
@@ -294,33 +297,22 @@
 
             <div class="modal-body">
                 <fieldset>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Khách hàng cần đăng nhập trước khi đặt tour</p>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Website sử dụng hình thức thanh toán qua Paypal để thanh toán Online</p>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Sau khi đăng ký hướng dẫn viên, cần liên hệ với admin để được xét cấp quyền mở tour</p>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Khách hàng có thể chỉnh sửa đơn đặt tour của mình nếu hướng dẫn viên của tour đó chưa xác nhận</p>
+
+                    <p>Chức năng đánh giá: Chỉ những khách hàng đã đi tour mới có quyền đánh giá</p>
+
+                    <p>Chức năng bình luận: Cần đăng nhập mới có thể bình luận</p>
+
+                    <p>Khách hàng sau khi hoàn tất việc đi tour có thể đăng ký tiếp tục đi tour đó</p>
+
+                    <p>Khi đăng ký với tư cách là hướng dẫn viên, sẽ không có quyền đặt tour</p>
+
                     <span style="color: blue; float: right; margin-right: 20px">ADMIN</span>
                 </fieldset>
             </div>

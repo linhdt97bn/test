@@ -31,9 +31,9 @@
                                 @if(Auth::user()->quyen == 1)
                                     <li><a href="{{route('lich-su')}}"><div>Lịch sử đặt tour</div></a></li>
                                 @elseif(Auth::user()->quyen == 2)
-                                    <li><a><div>Quản lý tour</div></a></li>
+                                    <li><a href="{{route('trang-chu-hdv')}}"><div>Quản lý tour</div></a></li>
                                 @elseif(Auth::user()->quyen == 3)
-                                    <li><a><div>Trang quản lý</div></a></li>
+                                    <li><a href="{{route('trang-chu-admin')}}"><div>Trang quản lý</div></a></li>
                                 @endif
                             </ul>
                         </li>  

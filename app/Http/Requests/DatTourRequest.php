@@ -25,7 +25,7 @@ class DatTourRequest extends FormRequest
     {
         return [
             'thoigianbatdau.required' => 'Thời gian bắt đầu không được để trống.',
-            'thoigianbatdau.date' => 'Không đúng định dạng ngày, tháng, năm.',
+            'thoigianbatdau.date' => 'Vui lòng kiểm tra lại thời gian.',
             'sokhachdangky.required' => 'Số khách đăng ký không được để trống.',
             'sokhachdangky.integer' => 'Số khách đăng ký phải là số tự nhiên'
         ];

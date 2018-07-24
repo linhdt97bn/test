@@ -75,50 +75,58 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
+        $bill = Bill::find($request->idbill);
+        if($bill){
+            if (!($bill->users_id == Auth::user()->id && $bill->tinhtrangdon == 1)) {
+                return redirect()->back()->with('loiThanhToan', 'Lỗi thanh toán.');
+            }else{
+                $payer = new Payer();
+                $payer->setPaymentMethod("paypal");
 
-        $payer = new Payer();
-        $payer->setPaymentMethod("paypal");
+                $item1 = new Item();
+                $item1->setName('ID don tour: '.$bill->id." Ten tour: ".$bill->tour->tentour)
+                    ->setCurrency('USD')
+                    ->setQuantity(1)
+                    ->setPrice(($bill->tongtien)/22500);
+                
+                $itemList = new ItemList();
+                $itemList->setItems(array($item1));
 
-        $item1 = new Item();
-        $item1->setName('ID don tour: '.$request->idbill." Ten tour: ".$request->tentour)
-            ->setCurrency('USD')
-            ->setQuantity(1)
-            ->setPrice(($request->tongtien)/22500);
-        
-        $itemList = new ItemList();
-        $itemList->setItems(array($item1));
+                $amount = new Amount();
+                $amount->setCurrency("USD")
+                    ->setTotal(($bill->tongtien)/22500);
 
-        $amount = new Amount();
-        $amount->setCurrency("USD")
-            ->setTotal(($request->tongtien)/22500);
+                $transaction = new Transaction();
+                $transaction->setAmount($amount)
+                    ->setItemList($itemList)
+                    ->setDescription("Payment description")
+                    ->setInvoiceNumber(uniqid());
 
-        $transaction = new Transaction();
-        $transaction->setAmount($amount)
-            ->setItemList($itemList)
-            ->setDescription("Payment description")
-            ->setInvoiceNumber(uniqid());
+                $redirectUrls = new RedirectUrls();
+                $redirectUrls->setReturnUrl(route('payment.create'))
+                    ->setCancelUrl(route('payment.create'));
 
-        $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl(route('payment.create'))
-            ->setCancelUrl(route('payment.create'));
+                $payment = new Payment();
+                $payment->setIntent("authorize")
+                    ->setPayer($payer)
+                    ->setRedirectUrls($redirectUrls)
+                    ->setTransactions(array($transaction));
 
-        $payment = new Payment();
-        $payment->setIntent("authorize")
-            ->setPayer($payer)
-            ->setRedirectUrls($redirectUrls)
-            ->setTransactions(array($transaction));
+                try {
+                    $payment->create($this->apiContext);
+                } catch (Exception $ex) {
 
-        try {
-            $payment->create($this->apiContext);
-        } catch (Exception $ex) {
+                    echo "Faild";
+                    exit(1);
+                }
 
-            echo "Faild";
-            exit(1);
+                $approvalUrl = $payment->getApprovalLink();
+
+                Session::put('payment_id',$payment->id);
+                return redirect()->to($approvalUrl);
+            }
+        }else{
+            return redirect()->back()->with('loiThanhToan', 'Lỗi thanh toán.');
         }
-
-        $approvalUrl = $payment->getApprovalLink();
-
-        Session::put('payment_id',$payment->id);
-        return redirect()->to($approvalUrl);
     }
 }

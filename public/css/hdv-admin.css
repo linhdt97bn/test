@@ -1,0 +1,17 @@
+th,td {
+   text-align: center
+}  
+.thongbao{
+   margin-top: 100px;
+   width: 40%;
+   text-align: center
+}
+form span {
+   color: red; 
+   margin-left: 20px
+} 
+.btn h2 {
+   margin-top:0px; 
+   margin-bottom:0px; 
+   text-align: center;
+}

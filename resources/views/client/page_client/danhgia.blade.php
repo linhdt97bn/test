@@ -121,7 +121,8 @@
                     @endforeach
                     @if($flag == true)
                         <div class="text-center" style="margin-top: 10px">
-                            <form action="{{route('danh-gia', $cttour->id)}}" method="post">
+                            <button id="has-rate">Đánh giá</button>
+                            <form action="{{route('danh-gia', $cttour->id)}}" method="post" id="form-rate" style="display: none">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}" >  
                                 <i class="glyphicon glyphicon-star" id="dg1" style="color: #DDDDDD;"></i>
                                 <i class="glyphicon glyphicon-star" id="dg2" style="color: #DDDDDD;"></i>

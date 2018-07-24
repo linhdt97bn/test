@@ -110,6 +110,7 @@ class PageController extends Controller
     public function postDatTour(DatTourRequest $request)
     {
         $tour = Tour::find($request->idtour);
+
         if(!($request->sokhachdangky <= $tour->sokhachtoida && $request->sokhachdangky > 0)){
             return redirect()->back()->with('loiKhachMax', 'Số khách đăng ký phải nhỏ hơn số khách tối đa');
         }
@@ -118,10 +119,16 @@ class PageController extends Controller
             return redirect()->back()->with('loiThoiGian', 'Vui lòng kiểm tra lại thời gian vừa nhập');
         }
 
+        $checkBill = Bill::where([['users_id', Auth::user()->id], ['tinhtrangdon', 0], ['tour_id', $request->idtour]])->first();
+
+        if($checkBill){
+            return redirect()->back()->with('loiDonTour', 'Bạn đã đặt tour này rồi.');
+        }
+
         $bill = new Bill();
-        $bill->tour_id = $request->idtour;
+        $bill->tour_id = $tour->id;
         $bill->users_id = Auth::user()->id;
-        $bill->tongtien = $request->giatour;
+        $bill->tongtien = $tour->giatour;
         $bill->tinhtrangdon = 0;
         $bill->thoigianbatdau = $request->thoigianbatdau;
         $bill->sokhachdangky = $request->sokhachdangky;
@@ -139,12 +146,32 @@ class PageController extends Controller
     {
         if($request->sodiem == 0) return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
 
-        $rate = new Rate();
-        $rate->tour_id = $idtour;
-        $rate->users_id = Auth::user()->id;
-        $rate->sodiem = $request->sodiem;
-        $rate->save();
-        return redirect()->back()->with('successRate', 'Cảm ơn bạn đã đánh giá tour');
+        $flag = false;
+        $tour = Tour::find($idtour);
+        if($tour){
+            foreach ($tour->bill as $value) {
+                if($value->tinhtrangdon == 4 && $value->users_id == Auth::user()->id ){
+                    $flag = true;
+                    break;
+                }
+            }
+        }
+
+        if($flag){
+            $rate = Rate::where([['tour_id', $tour->id], ['users_id', Auth::user()->id]])->get();
+            if(count($rate) > 0){
+                return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
+            }else{
+                $rate = new Rate();
+                $rate->tour_id = $idtour;
+                $rate->users_id = Auth::user()->id;
+                $rate->sodiem = $request->sodiem;
+                $rate->save();
+                return redirect()->back()->with('successRate', 'Cảm ơn bạn đã đánh giá tour');
+            }        
+        }else{
+            return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
+        }
     }
 
     public function getTimkiem(Request $request)

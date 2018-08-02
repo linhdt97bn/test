@@ -8,18 +8,18 @@
                         <div class="comment-meta">
                             <div class="comment-author vcard">
                                 <span class="comment-avatar clearfix">
-                                    <img alt='' src='upload/{{$comment->users->anhdaidien}}' class='avatar avatar-60 photo avatar-default' height='60' width='60' />
+                                    <img alt='' src='upload/{{$comment->users->avatar}}' class='avatar avatar-60 photo avatar-default' height='60' width='60' />
                                 </span>
                             </div>
                         </div>
                         <div class="comment-content clearfix">
-                            <div class="comment-author"><a>{{$comment->users->hoten}}</a>
+                            <div class="comment-author"><a>{{$comment->users->name}}</a>
                                 <span><a>April 24, 2012 at 10:46 am</a></span>
                             </div>
-                            @if($comment->trangthaibinhluan == 0)
+                            @if($comment->status == 0)
                                 <p style="color: red"> <<<< Bình luận đã bị ẩn >>>> </p>
                             @else
-                                <p>{!! $comment->noidung !!}</p>
+                                <p>{!! $comment->content !!}</p>
                             @endif
                         </div>
                         <div class="clear"></div>
@@ -32,16 +32,16 @@
                                     <div class="comment-meta">
                                         <div class="comment-author vcard">
                                             <span class="comment-avatar clearfix">
-                                                <img alt='' src='upload/{{$reply->users->anhdaidien}}' class='avatar avatar-40 photo' height='40' width='40' />
+                                                <img alt='' src='upload/{{$reply->users->avatar}}' class='avatar avatar-40 photo' height='40' width='40' />
                                             </span>
                                         </div>
                                     </div>
                                     <div class="comment-content clearfix">
                                         <div class="comment-author">
-                                            <a>{{$reply->users->hoten}}</a>
+                                            <a>{{$reply->users->name}}</a>
                                             <span><a>April 25, 2012 at 1:03 am</a></span>
                                         </div>
-                                        <p>{!! $reply->noidung !!}</p>
+                                        <p>{!! $reply->content !!}</p>
                                     </div>
                                 </div>
                             </li>

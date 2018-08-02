@@ -19,10 +19,13 @@ class CreateBillTable extends Migration
             $table->foreign('tour_id')->references('id')->on('tour')->onDelete('cascade');
             $table->integer('users_id')->unsigned();
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->tinyInteger('sokhachdangky');
-            $table->date('thoigianbatdau');
-            $table->integer('tongtien');
-            $table->tinyInteger('tinhtrangdon');   
+            $table->tinyInteger('adult_number');
+            $table->tinyInteger('child_number');
+            $table->date('time_start');
+            $table->integer('total_price');
+            $table->tinyInteger('status');
+            $table->string('request')->nullable();
+            $table->string('response')->nullable(); 
             $table->timestamps();
         });
     }

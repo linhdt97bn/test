@@ -19,7 +19,6 @@
                 <thead>
                     <tr align="center">
                         <th>Tên tour</th>
-                        <th>Địa điểm</th>
                         <th>Số khách tối đa</th>
                         <th>Số ngày đi</th>
                         <th>Gía tour</th>
@@ -31,13 +30,12 @@
                 <tbody>
                     @foreach($tour as $dst)  
                         <tr class="odd gradeX">
-                            <td><a href="{{route('chi-tiet',$dst->id)}}">{{$dst->tentour}}</a></td>
-                            <td>{{$dst->place->tendiadiem}}</td>
-                            <td>{{$dst->sokhachtoida}}</td>
-                            <td>{{$dst->songaydi}}</td>
-                            <td>{{number_format($dst->giatour)}}</td>
-                            @if(strlen($dst->hinhanh)>0)  
-                                <td><img src="upload/{{$dst->hinhanh}}" width="60" height="60"></td>
+                            <td><a href="{{route('chi-tiet',$dst->id)}}">{{$dst->tour_name}}</a></td>
+                            <td>{{$dst->customer_max}}</td>
+                            <td>{{$dst->roadmap->count()}}</td>
+                            <td>{{number_format($dst->price)}}</td>
+                            @if(strlen($dst->image_tour)>0)  
+                                <td><img src="upload/{{$dst->image_tour}}" width="60" height="60"></td>
                             @else
                                 <td></td>
                             @endif

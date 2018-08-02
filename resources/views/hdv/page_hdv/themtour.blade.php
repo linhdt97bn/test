@@ -14,10 +14,9 @@
                     {{Session::get('loi')}}
                 </div>
             @endif
-            @if(!isset($idt))
-            <div class="btn btn-success" style="width: 100%">
-                <h2> Thêm Tour</h2>
-            </div>
+
+            @if(!isset($edit_tour))
+            <div class="btn btn-success" style="width: 100%"><h2>Thêm Tour</h2></div>
             <div class="panel-body">
                 <form action="hdv/tour" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{csrf_token()}}"> 
@@ -26,34 +25,50 @@
                     <span>{{$errors->first('tentour')}}</span>
                     <input type="text" class="form-control" name="tentour"value="{{old('tentour')}}">
                     <br>
-                    <label>Địa điểm</label>
-                    <select name="diadiem" class="form-control">
-                        @foreach($dd as $dc)
-                        <option value="{{$dc->id}}">{{$dc->tendiadiem}}</option>
-                        @endforeach
-                    </select>
+
+                    <label>Giá tour</label>
+                    <span>{{$errors->first('giatour')}}</span>
+                    <input type="text" class="form-control" name="giatour" value="{{old('giatour')}}">
                     <br>
+
+                    <label>Hình ảnh</label>
+                    <span>{{$errors->first('hinhanh')}}</span>
+                    <input type="file" class="form-control" name="hinhanh">
+                    <br>
+
                     <label>Số khách tối đa</label>
                     <span>{{$errors->first('sokhachtoida')}}</span>
                     <input type="text" class="form-control" name="sokhachtoida" value="{{old('sokhachtoida')}}">
                     <br>
+
                     <label>Số ngày đi</label>
-                    <span >{{$errors->first('songaydi')}}</span>
-                    <input type="text" class="form-control" name="songaydi" value="{{old('songaydi')}}">
+                    <select class="form-control songaydi" name="songaydi">
+                        @for($i = 1; $i <= 10; $i++)
+                        <option value="{{$i}}">{{$i}}</option>
+                        @endfor
+                    </select>
                     <br>
-                    <label>Gía tour</label>
-                    <span>{{$errors->first('giatour')}}</span>
-                    <input type="text" class="form-control" name="giatour" value="{{old('giatour')}}">
-                    <br>
-                    <label>Mô tả</label>
-                    <span>{{$errors->first('mota')}}</span>
-                    <textarea class="form-control" name="mota" rows="8" class="ckeditor" id="mota">{{old('mota')}}</textarea>
-                    <br>
-                    <label>Hình ảnh</label>
-                    <input type="file" class="form-control" name="hinhanh">
-                    <br>
+                   
+                    <label>Lộ trình</label>
+                    <span>{{$errors->first('ngay1')}}</span>
+                    <div class="lotrinhdi" style="margin-left: 10px;">        
+                        <div class="lotrinh" id="lotrinh1">
+                            <label class="ngaydi">Ngày 1</label>
+                            <label class="dd1">Địa điểm</label>
+                            <select class="form-control diadiem" id="diadiem1">
+                                @foreach($diadiem as $dd)
+                                <option value="{{$dd->id}}">{{$dd->place_name}}</option>
+                                @endforeach
+                            </select><br>
+                            <input type="hidden" name="place_1" id="place_1">
+
+                            <label>Mô tả</label>
+                            <textarea class="form-control ckeditor" name="ngay1" rows="8"></textarea>
+                        </div>
+                    </div>
+
                     <div align="center">
-                    <button type="submit" class="btn btn-success">Thêm</button>
+                        <button type="submit" class="btn btn-success">Thêm</button>
                     </div>
                 </form>
             </div>
@@ -62,42 +77,32 @@
                 <h2> Sửa Tour</h2>
             </div>
             <div class="panel-body">
-                <form action="{{route('tour.update', $idt)}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('tour.update', $edit_tour->id)}}" method="POST" enctype="multipart/form-data">
                     @method('put')
                     <input type="hidden" name="_token" value="{{csrf_token()}}"> 
 
                     <label>Tên tour</label>
                     <span>{{$errors->first('tentour')}}</span>
-                    <input type="text" class="form-control" name="tentour"value="{{$idt->tentour}}">
+                    <input type="text" class="form-control" name="tentour"value="{{$edit_tour->tour_name}}">
                     <br>
-                    <label>Địa điểm</label>
-                    <select name="diadiem" class="form-control">
-                        @foreach($dd as $dc)
-                        <option value="{{$dc->id}}" @if($idt->diadiem_id == $dc->id) selected="" @endif >{{$dc->tendiadiem}}</option>
-                        @endforeach
-                    </select>
-                    <br>
-                    <label>Số khách tối đa</label>
-                    <span >{{$errors->first('sokhachtoida')}}</span>
-                    <input type="text" class="form-control" name="sokhachtoida" value="{{$idt->sokhachtoida}}">
-                    <br>
-                    <label>Số ngày đi</label>
-                    <span>{{$errors->first('songaydi')}}</span>
-                    <input type="text" class="form-control" name="songaydi" value="{{$idt->songaydi}}">
-                    <br>
-                    <label>Gía tour</label>
+
+                    <label>Giá tour</label>
                     <span>{{$errors->first('giatour')}}</span>
-                    <input type="text" class="form-control" name="giatour" value="{{$idt->giatour}}">
+                    <input type="text" class="form-control" name="giatour" value="{{$edit_tour->price}}">
                     <br>
-                    <label>Mô tả</label>
-                    <span>{{$errors->first('mota')}}</span>
-                    <textarea class="form-control" name="mota" rows="8">{{$idt->mota}}</textarea>
-                    <br>
+
                     <label>Hình ảnh</label>
-                    <input type="file" class="form-control" name="hinhanh">
+                    <span>{{$errors->first('hinhanh')}}</span>
+                    <input type="file" class="form-control" name="hinhanh" value="{{$edit_tour->image_tour}}">
                     <br>
+
+                    <label>Số khách tối đa</label>
+                    <span>{{$errors->first('sokhachtoida')}}</span>
+                    <input type="text" class="form-control" name="sokhachtoida" value="{{$edit_tour->customer_max}}">
+                    <br>
+
                     <div align="center">
-                    <button type="submit" class="btn btn-success">Sửa</button>
+                        <button type="submit" class="btn btn-success">Sửa</button>
                     </div>
                 </form>
             </div>
@@ -106,6 +111,5 @@
     </div>
     </div>
 </div>
-<script src="CK/ckeditor.js"></script>
-<script> CKEDITOR.replace('mota'); </script>
+<div class="script"></div>
 @endsection

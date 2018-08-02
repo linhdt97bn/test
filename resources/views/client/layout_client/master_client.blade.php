@@ -11,6 +11,19 @@
         <link rel="stylesheet" href="css/style.css" type="text/css" />
         <link rel="stylesheet" href="css/animate.css" type="text/css" />
         <link rel="stylesheet" href="css/mytour.css" type="text/css">
+        <style type="text/css">
+
+            .entry-content ul {
+                margin-bottom: 10px;
+            }
+            .entry-content ul li {
+                margin-left: 50px;
+            }
+
+            .entry-content p {
+                margin-bottom: 10px;
+            }
+        </style>
 
         <script src="js/jquery-2.2.4.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

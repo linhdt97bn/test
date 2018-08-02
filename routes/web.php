@@ -35,7 +35,7 @@ Route::get('tim-kiem', ['as' => 'tim-kiem', 'uses' => 'PageController@getTimKiem
 
 //xu ly ajax
 Route::post('binhluan', 'AjaxController@postBinhLuan');
-Route::post('timkiem', 'AjaxController@postTimKiem');
+Route::get('timkiem', 'AjaxController@getTimKiem');
 Route::post('suadonhang', 'AjaxController@postSuaDonHang');
 
 

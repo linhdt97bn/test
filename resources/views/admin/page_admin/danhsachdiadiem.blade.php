@@ -27,16 +27,16 @@
                     @foreach($dsdd as $ds)
                         <tr class="odd gradeX" align="center">
                             <td>{{$ds->id}}</td>
-                            <td>{{$ds->tendiadiem}}</td>
+                            <td>{{$ds->place_name}}</td>
                             <td><a href="{{route('diadiem.edit',$ds->id)}}"><button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></a></td>
                             <td>
-                            @if($ds->tour->count() == 0)
+                                @if($ds->roadmap_place->count() == 0 && $ds->parent_id != 0)
                                 <form action="{{route('diadiem.destroy',$ds->id)}}" method="post">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     @method('delete')
                                     <button type="submit" onclick="return xoa()" class="btn btn-danger"><i class="fa fa-trash-o fa-fw"></i></button>
                                 </form>
-                            @endif
+                                @endif
                             </td>
                         </tr>
                     @endforeach

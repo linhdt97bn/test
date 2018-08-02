@@ -30,20 +30,20 @@
                 <tbody>
                     @foreach($dskhach as $dsk)
                         <tr class="odd gradeX" >
-                            <td>{{$dsk->hoten}}</td>
+                            <td>{{$dsk->name}}</td>
                             <td>{{$dsk->email}}</td>
-                            @if($dsk->gioitinh == 1)
+                            @if($dsk->gender == 1)
                                 <td>Nam</td>
-                            @elseif($dsk->gioitinh == 0)
+                            @elseif($dsk->gender === 0)
                                 <td>Nữ</td>
                             @else
                                 <td></td>
                             @endif
-                            <td>{{$dsk->sodienthoai}}</td>
-                            <td>{{$dsk->diachi}}</td> 
+                            <td>{{$dsk->phone}}</td>
+                            <td>{{$dsk->address}}</td> 
                             <td><a href="admin/edit-user/{{$dsk->id}}"><button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></a></td>
-                            <td>                  
-                            @if($dsk->bill->count() == 0 && $dsk->comment->count() == 0)
+                            <td>         
+                            @if($dsk->bill->count() == 0)
                                 <form action="{{route('xoa-user',$dsk->id)}}" method="post">
                                     @method('delete')
                                     {{csrf_field()}}
@@ -82,16 +82,16 @@
                 <tbody>
                     @foreach($dshdv as $dsh)
                         <tr class="odd gradeX" >
-                            <td>{{$dsh->hoten}}</td>
+                            <td>{{$dsh->name}}</td>
                             <td>{{$dsh->email}}</td>
-                            <td>{{$dsh->sodienthoai}}</td>
-                            <td>{{$dsh->diachi}}</td>              
+                            <td>{{$dsh->phone}}</td>
+                            <td>{{$dsh->address}}</td>              
 
-                            @if($dsh->trangthai == "" || $dsh->trangthai == 1)
+                            @if($dsh->status == "" || $dsh->status == 1)
                             <td>
                                 <form action="{{route('cnhdv1',$dsh->id)}}" method="post" onclick="return chapnhan()">
-                                       <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                       <button type="submit" class="btn btn-primary">Chưa có quyền</button>    
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <button type="submit" class="btn btn-primary">Chưa có quyền</button>    
                                 </form>
                             </td>
                             @else
@@ -99,7 +99,7 @@
                             @endif
                             <td><a href="admin/edit-user/{{$dsh->id}}"><button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></a></td>
                             <td>
-                            @if($dsh->tour->count() == 0 && $dsh->comment->count() == 0)
+                            @if($dsh->tour->count() == 0)
                                 <form action="{{route('xoa-user',$dsh->id)}}" method="post">
                                     @method('delete')
                                     {{csrf_field()}}

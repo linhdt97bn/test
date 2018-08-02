@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRateTable extends Migration
+class CreateRoadmapTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateRateTable extends Migration
      */
     public function up()
     {
-        Schema::create('rate', function (Blueprint $table) {
+        Schema::create('roadmap', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('tour_id')->unsigned();
             $table->foreign('tour_id')->references('id')->on('tour')->onDelete('cascade');
-            $table->integer('users_id')->unsigned();
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->tinyInteger('point');
+            $table->text('description');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateRateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rate');
+        Schema::dropIfExists('roadmap');
     }
 }

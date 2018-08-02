@@ -15,11 +15,13 @@ class CheckHDVMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->quyen == 2)
+        if(Auth::check() && Auth::user()->role == 2)
         {
-            if(Auth::user()->trangthai == 1)
+            if(Auth::user()->status == 1){
                 return redirect()->route('trang-chu')->with('thongbao','Bạn chưa được cấp quyền');
-            return $next($request);
+            }else{
+                return $next($request);
+            }          
         }else{
             return redirect()->route('trang-chu');
         }

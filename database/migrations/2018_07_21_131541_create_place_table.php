@@ -15,7 +15,8 @@ class CreatePlaceTable extends Migration
     {
         Schema::create('place', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tendiadiem', 100);
+            $table->integer('parent_id');
+            $table->string('place_name', 100);
             $table->timestamps();
         });
     }

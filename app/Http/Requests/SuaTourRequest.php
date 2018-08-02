@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaoTourRequest extends FormRequest
+class SuaTourRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,7 @@ class TaoTourRequest extends FormRequest
         return [
             'tentour'=>'required',
             'sokhachtoida'=>'required|integer|min:0',
-            'hinhanh'=>'required',
             'giatour'=>'required|integer|min:0',
-            'place_1'=>'required',
-            'ngay1'=>'required',
         ];      
     }
 
@@ -42,10 +39,7 @@ class TaoTourRequest extends FormRequest
             'giatour.required'=>'Nhập gía tour',
             'giatour.integer'=>'Nhập 1 số',
             'sokhachtoida.min'=>'Nhập 1 số lớn hơn 0',
-            'hinhanh.required'=>'Chọn hình ảnh',
             'giatour.min'=>'Nhập 1 số lớn hơn 0',
-            'place_1.required'=>'Chọn địa điểm',
-            'ngay1.required'=>'Nhập lộ trình',
         ]; 
     }
 }

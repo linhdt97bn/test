@@ -31,16 +31,16 @@
                                 @foreach($to->comment as $bl)
                                    @if($bl->parent_id ==0 )
                                         @if($flag == true ) 
-                                            <td><a href="{{route('chi-tiet',$to->id)}}">{{$to->tentour}}</a></td>
+                                            <td><a href="{{route('chi-tiet',$to->id)}}">{{$to->tour_name}}</a></td>
                                             <?php $flag = false; ?>
                                         @else
                                             <td></td>
                                         @endif
                                         <td>{{$bl->users->email}}</td>
-                                        <td>{{$bl->noidung}}</td>
+                                        <td>{{$bl->content}}</td>
                                         <td></td>
                                         <td>
-                                            @if($bl->trangthaibinhluan == 0)
+                                            @if($bl->status == 0)
                                                 <div style="color: red"> Ẩn </div>
                                             @else
                                                 <form action="admin/anbinhluan/{{$bl->id}}" method="post" onclick="return an()">
@@ -50,14 +50,14 @@
                                             @endif
                                         </td></tr>
                                         @foreach($to->comment as $tl)
-                                            @if($tl->parent_id == $bl->id && $bl->trangthaibinhluan == 1)
+                                            @if($tl->parent_id == $bl->id && $bl->status == 1)
                                                 <tr class="odd gradeX">
                                                     <td></td>
                                                     <td>{{$tl->users->email}}</td>
                                                     <td></td>
-                                                    <td>{{$tl->noidung}}</td>
+                                                    <td>{{$tl->content}}</td>
                                                     <td>
-                                                        @if($tl->trangthaibinhluan == 0)
+                                                        @if($tl->status == 0)
                                                             <div style="color: red"> Ẩn </div>
                                                         @else
                                                             <form action="admin/anbinhluan/{{$tl->id}}" method="post" onclick="return an()">

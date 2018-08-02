@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $table = 'comment';
+    protected $fillable = [
+        'users_id', 
+        'tour_id',
+        'parent_id', 
+        'content'
+    ]; 
 
     public function users()
     {

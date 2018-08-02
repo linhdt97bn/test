@@ -20,8 +20,8 @@ class CreateCommentTable extends Migration
             $table->integer('parent_id')->unsigned();
             $table->integer('users_id')->unsigned();
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('noidung');
-            $table->boolean('trangthaibinhluan')->default(1);
+            $table->text('content');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

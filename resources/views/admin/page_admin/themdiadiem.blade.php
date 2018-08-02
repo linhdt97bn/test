@@ -18,6 +18,13 @@
                     <form action="{{route('diadiem.store')}}" method="post">
                         <input type="hidden" name="_token" value="{{csrf_token()}}"> 
 
+                        <label>Tỉnh</label>
+                        <select name="province" class="form-control">
+                            @foreach($province as $prv)
+                            <option value="{{$prv->id}}">{{$prv->place_name}}</option>
+                            @endforeach
+                        </select><br>
+
                         <label>Địa điểm</label>
                         <span>{{$errors->first('tendiadiem')}}</span>
                         <input type="text" class="form-control" name="tendiadiem">
@@ -34,11 +41,22 @@
                 <div class="panel-body">
                     <form action="{{route('diadiem.update',$dd->id)}}" method="post">
                         @method('put')
-                        <input type="hidden" name="_token" value="{{csrf_token()}}"> 
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+
+                        <label>Tỉnh</label>
+                        <select name="province" class="form-control">
+                            @foreach($province as $prv)
+                                @if($dd->parent_id == $prv->id)
+                                    <option value="{{$prv->id}}" selected="">{{$prv->place_name}}</option>
+                                @else
+                                    <option value="{{$prv->id}}">{{$prv->place_name}}</option>
+                                @endif
+                            @endforeach
+                        </select><br> 
 
                         <label>Địa điểm</label>
                         <span>{{$errors->first('tendiadiem')}}</span>
-                        <input type="text" class="form-control" name="tendiadiem" value="{{$dd->tendiadiem}}">
+                        <input type="text" class="form-control" name="tendiadiem" value="{{$dd->place_name}}">
                         <br>
                         <div align="center">
                         <button type="submit" class="btn btn-success">Sửa</button>

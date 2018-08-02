@@ -18,10 +18,10 @@ class AdminController extends Controller
 
     public function getListUser($idquyen){
         if($idquyen == 1){
-            $dskhach = User::where('quyen',1)->get();
+            $dskhach = User::where('role', 1)->get();
             return view('admin.page_admin.danhsachnguoidung', compact('dskhach'));
         }elseif($idquyen == 2){
-            $dshdv = User::where('quyen',2)->get();
+            $dshdv = User::where('role', 2)->get();
             return view('admin.page_admin.danhsachnguoidung', compact('dshdv'));
         }
     }
@@ -58,23 +58,25 @@ class AdminController extends Controller
         $user->sodienthoai=$request->sodienthoai;
         $user->diachi = $request->diachi;
         $user->save();
-        if($user->quyen == 1)
-        return redirect('admin/list-user/1')->with('thongbao','Sửa thông tin thành công');
-        else
-            return redirect('admin/list-user/2')->with('thongbao','Sửa thông tin thành công');
+        if($user->quyen == 1){
+            return redirect('admin/list-user/1')->with('thongbao', 'Sửa thông tin thành công');
+        }
+        else{
+            return redirect('admin/list-user/2')->with('thongbao', 'Sửa thông tin thành công');
+        }
     }
 
     public function deleteUser($iduser){
         $user = User::find($iduser);
         $user->delete();
-        return redirect()->back()->with('thongbao','Xóa thành công');
+        return redirect()->back()->with('thongbao', 'Xóa thành công');
     }
 
     public function ChapnhanHDV($idhdv){
         $cn = User::find($idhdv);
-        $cn->trangthai =2;
+        $cn->status =2;
         $cn->save();
-        return redirect()->back()->with('thongbao','Bạn đã cấp quyền thành công');
+        return redirect()->back()->with('thongbao', 'Bạn đã cấp quyền thành công');
     }
 
     public function DSBinhluan(){
@@ -84,9 +86,9 @@ class AdminController extends Controller
 
     public function Anbinhluan($idbl){
         $comment = Comment::find($idbl);
-        $comment->trangthaibinhluan = 0;
+        $comment->status = 0;
         $comment->save();
-        return redirect('admin/dsbinhluan')->with('thongbao','Bình luận đã đưọc ẩn');
+        return redirect('admin/dsbinhluan')->with('thongbao', 'Bình luận đã đưọc ẩn');
     }
 
     public function ThongkeDonhang(){
@@ -95,7 +97,7 @@ class AdminController extends Controller
     }
 
     public function ThongkeDoanhthu(){
-        $doanhthu = Bill::where('tinhtrangdon',3)->orwhere('tinhtrangdon',4)->get();
+        $doanhthu = Bill::where('status', 3)->orwhere('status', 4)->get();
         return view('admin.page_admin.thongke', compact('doanhthu'));
     }
 

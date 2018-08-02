@@ -1,7 +1,7 @@
 @extends('client.layout_client.master_client')
 
 @section('content')
-<section id="content" style="background-image: url('upload/starsolid.gif')">
+<section id="content">
     <div class="content-wrap">
         <div class="container">
             @if(isset($tour))
@@ -13,21 +13,21 @@
                             <div class="tour_container">
                                 <div class="img_container">
                                     <a href="{{route('chi-tiet', $tr->id)}}">
-                                        <img src="upload/{{$tr->hinhanh}}" width="360" height="250" class="img-responsive">
-                                        <span class="price"> {{number_format($tr->giatour)}} <sup>VND</sup></span>
+                                        <img src="upload/{{$tr->image_tour}}" width="360" height="250" class="img-responsive">
+                                        <span class="price"> {{number_format($tr->price)}} <sup>VNĐ</sup></span>
                                     </a>
                                 </div>
                                 <div class="tour_title">
-                                    <h3>{{$tr->tentour}}</h3>
+                                    <h3>{{$tr->tour_name}}</h3>
                                     <div class="rating">
                                         @for($k = 0; $k < 5; $k++)
-                                            @if($k < $tr->rate->avg('sodiem'))
+                                            @if($k < $tr->rate->avg('point'))
                                                 <i class="icon-smile voted"></i>
                                             @else
                                                 <i class="icon-smile"></i>
                                             @endif
                                         @endfor
-                                        <span>({{$tr->rate->count()}} luot danh gia)</span>	
+                                        <span>({{$tr->rate->count()}} lượt đánh giá)</span>	
                                     </div>
                                 </div>
                             </div>

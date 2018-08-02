@@ -14,75 +14,56 @@ use Auth;
 use App\Tour;
 use App\Bill;
 use App\Rate;
+use App\RoadmapPlace;
 
 class PageController extends Controller
 {
     
     public function getTrangChu()
     {
-        $tour=Tour::where('trangthaitour', 1)->paginate(12);
+        $tour=Tour::where('status', 1)->paginate(12);
         return view('client.page_client.trangchu', compact('tour'));
     }
 
     public function postDangKyKhach(DangKyKhachRequest $req)
     {
-    	$flag = 0;
-    	for ($i=0; $i < strlen($req->sodienthoai); $i++) { 
-            if(!((0 < $req->sodienthoai[$i]  && $req->sodienthoai[$i] <= 9 ) || $req->sodienthoai[$i] === '0')){
-                $flag = 1;
-                break;
+    	for ($i=0; $i < strlen($req->phone); $i++) { 
+            if(!((0 < $req->phone[$i]  && $req->phone[$i] <= 9 ) || $req->phone[$i] === '0')){
+                return redirect()->back()->with('loiSodienthoai', 'Kiểm tra lại số điện thoại.');
             } 
     	}
 
-        if ($flag) {
-            return redirect()->back()->with('loiSodienthoai', 'Kiểm tra lại số điện thoại.');
-        }
-
-        $users = new User();
-        $users->hoten = $req->hoten;
-        $users->email = $req->email;
-        $users->password = Hash::make($req->password);
-        $users->anhdaidien = 'nouser.jpg';
-        $users->sodienthoai = $req->sodienthoai;
-        $users->quyen = 1;
-        $users->save();
+        $req->merge([
+            'password' => Hash::make($req->password),
+            'role' => 1,
+            'avatar' => 'nouser.jpg'
+        ]);
+        User::create($req->all());
         return redirect()->back()->with('thanhcongkhach', 'Đăng ký thành công');
     }
 
     public function postDangKyHDV(DangKyHDVRequest $req)
     {
-    	$flag = 0;
-        for ($i=0; $i < strlen($req->sodienthoai); $i++) { 
-            if(!((0 < $req->sodienthoai[$i]  && $req->sodienthoai[$i] <= 9 ) || $req->sodienthoai[$i] === '0')){
-                $flag = 1;
-                break;
+        for ($i=0; $i < strlen($req->phone); $i++) { 
+            if(!((0 < $req->phone[$i]  && $req->phone[$i] <= 9 ) || $req->phone[$i] === '0')){
+                return redirect()->back()->with('loiSodienthoaiHDV', 'Kiểm tra lại số điện thoại.');
             }
         }
-    	
-        if ($flag) {
-            return redirect()->back()->with('loiSodienthoaiHDV', 'Kiểm tra lại số điện thoại.');
-        }
 
-        $users = new User();
-        $users->hoten = $req->hoten;
-        $users->email = $req->email;
-        $users->password = Hash::make($req->password);
-        $users->anhdaidien = 'nouser.jpg';
-        $users->sodienthoai = $req->sodienthoai;
-        $users->diachi = $req->diachi;
-        $users->quyen = 2;
-        $users->save();
+        $req->merge([
+            'password' => Hash::make($req->password),
+            'role' => 2,
+            'avatar' => 'nouser.jpg'
+        ]);
+        User::create($req->all());
         return redirect()->back()->with('thanhconghdv', 'Đăng ký thành công');
     }
 
     public function postDangNhap(DangNhapRequest $req)
     {
         $check_user = array('email'=>$req->email, 'password'=>$req->password);
-        $check_admin = array('email'=>$req->email, 'password'=>$req->password, 'quyen'=>3);
         $remember = $req->ghinho;
-        if(Auth::attempt($check_admin, $remember)){
-            return redirect()->back();
-        }else if(Auth::attempt($check_user, $remember)){
+        if(Auth::attempt($check_user, $remember)){
             return redirect()->back();
         }else{
             return redirect()->back()->with('loiLogin', 'Sai tài khoản hoặc mật khẩu!');
@@ -97,21 +78,21 @@ class PageController extends Controller
 
     public function getTourDiaDiem($iddd)
     {
-        $tourdd = Tour::where([['place_id', $iddd], ['trangthaitour', 1]])->paginate(12);
-        return view('client.page_client.danhsachtour', compact('tourdd'));
+        $tour_place = RoadmapPlace::tourPlace($iddd)->get();
+        return view('client.page_client.danhsachtour', compact('tour_place'));
     } 
 
     public function getTourCuaHdv($idhdv)
     {
-        $tourhdv = Tour::where([['users_id', $idhdv], ['trangthaitour', 1]])->paginate(12);
-        return view('client.page_client.danhsachtour', compact('tourhdv'));
+        $tour_hdv = Tour::where([['users_id', $idhdv], ['status', 1]])->paginate(12);
+        return view('client.page_client.danhsachtour', compact('tour_hdv'));
     }
 
     public function postDatTour(DatTourRequest $request)
     {
         $tour = Tour::find($request->idtour);
 
-        if(!($request->sokhachdangky <= $tour->sokhachtoida && $request->sokhachdangky > 0)){
+        if(!($request->adult_number + $request->child_number <= $tour->customer_max)){
             return redirect()->back()->with('loiKhachMax', 'Số khách đăng ký phải nhỏ hơn số khách tối đa');
         }
 
@@ -119,7 +100,7 @@ class PageController extends Controller
             return redirect()->back()->with('loiThoiGian', 'Vui lòng kiểm tra lại thời gian vừa nhập');
         }
 
-        $checkBill = Bill::where([['users_id', Auth::user()->id], ['tinhtrangdon', 0], ['tour_id', $request->idtour]])->first();
+        $checkBill = Bill::where([['users_id', Auth::user()->id], ['status', 0], ['tour_id', $request->idtour]])->first();
 
         if($checkBill){
             return redirect()->back()->with('loiDonTour', 'Bạn đã đặt tour này rồi.');
@@ -128,10 +109,16 @@ class PageController extends Controller
         $bill = new Bill();
         $bill->tour_id = $tour->id;
         $bill->users_id = Auth::user()->id;
-        $bill->tongtien = $tour->giatour;
-        $bill->tinhtrangdon = 0;
-        $bill->thoigianbatdau = $request->thoigianbatdau;
-        $bill->sokhachdangky = $request->sokhachdangky;
+        $bill->total_price = $tour->price;
+        $bill->status = 0;
+        $bill->time_start = $request->thoigianbatdau;
+        $bill->adult_number = $request->adult_number;
+        $bill->child_number = $request->child_number;
+
+        if($request->check_request == "on"){
+            $bill->request = $request->request;
+        }
+        
         $bill->save();
         return redirect()->back()->with('successDatTour', 'Gửi đơn đặt tour thành công.');
     }
@@ -176,20 +163,29 @@ class PageController extends Controller
 
     public function getTimkiem(Request $request)
     {
-        $tk = $request->timkiem;
-        $tourtimkiem = Tour::where([['tentour', 'like', '%'.$tk.'%'],['trangthaitour', 1]])
-                ->orwhere([['giatour', $tk], ['trangthaitour', 1]])->paginate(12);
+        $tk = $request->input('timkiem');
+        $tour_search = Tour::search($tk)->paginate(12);
 
-        return view('client.page_client.danhsachtour', compact('tourtimkiem', 'count'));
+        return view('client.page_client.danhsachtour', compact('tour_search'));
     }
 
     public function postSuaThongTin(SuaNguoiDungRequest $request)
     {
         $user = Auth::user();
 
-        if($request->checkpassword == "on"){
-            $user->password = bcrypt($request->password);
+        for ($i=0; $i < strlen($request->phone); $i++) { 
+            if(!((0 < $request->phone[$i]  && $request->phone[$i] <= 9 ) || $request->phone[$i] === '0')){
+                return redirect()->back()->with('loiSuaSoDienThoai', 'Kiểm tra lại số điện thoại.');
+            }
         }
+
+        if (is_numeric($request->birthday)) {
+            $y = date('Y');
+            if(!(($y - $request->birthday <= 100) && ($y - $request->birthday >= 3))) {
+                return redirect()->back()->with('loiNamSinh', 'Vui lòng nhập đúng năm sinh');
+            }
+        }
+    
         if($request->hasFile('anhdaidien')){
             $file = $request->file('anhdaidien');
             $duoi = $file->getClientOriginalExtension();
@@ -201,38 +197,17 @@ class PageController extends Controller
             $anhdaidien= str_random(4)."_".$name;
             while(file_exists("upload".$anhdaidien)){
                 $anhdaidien= str_random(4)."_".$name;
-            }
-            
-            $file->move("upload", $anhdaidien);
-            $user->anhdaidien = $anhdaidien;
+            } 
+
+            $file->move("upload", $anhdaidien); 
+            $request->merge(['avatar' => $anhdaidien]);  
         }
 
-        $flag = 0;
-        for ($i=0; $i < strlen($request->sodienthoai); $i++) { 
-            if(!((0 < $request->sodienthoai[$i]  && $request->sodienthoai[$i] <= 9 ) || $request->sodienthoai[$i] === '0')){
-                $flag = 1;
-                break;
-            }
-        }
-        
-        if ($flag) {
-           return redirect()->back()->with('loiSuaSoDienThoai', 'Kiểm tra lại số điện thoại.');
-        }
-        
-        if (is_numeric($request->namsinh)) {
-            $y = date('Y');
-            if($y - $request->namsinh  <= 100 && $y - $request->namsinh  >= 3) {
-                $user->namsinh = $request->namsinh;
-            }else{
-                return redirect()->back()->with('loiNamSinh', 'Vui lòng nhập đúng năm sinh');
-            }
+        if($request->checkpassword == "on"){
+            $request->merge(['password' => bcrypt($request->password)]);
         }
 
-        $user->hoten = $request->hoten;
-        $user->gioitinh = $request->gioitinh;
-        $user->sodienthoai=$request->sodienthoai;
-        $user->diachi = $request->diachi;
-        $user->save();
+        $user->update($request->all());
         return redirect()->back()->with('suathanhcong', 'Sửa thông tin thành công');
     }
 }

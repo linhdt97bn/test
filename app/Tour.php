@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Tour extends Model
 {
     protected $table = 'tour';
+    protected $fillable = [
+        'tour_name',
+        'users_id',
+        'customer_max',
+        'price',
+        'image_tour',
+        'status'
+    ];
 
     public function users()
     {
@@ -28,8 +36,14 @@ class Tour extends Model
         return $this -> hasMany('App\Bill');
     }
 
-    public function place()
+    public function roadmap()
     {
-        return $this -> belongsTo('App\Place');
+        return $this -> hasMany('App\Roadmap');
+    }
+
+    public function scopeSearch($query, $string)
+    {
+        return $query->where([['tour_name', 'like', '%'.$string.'%'],['status', 1]])
+            ->orwhere([['price', $string], ['status', 1]]);
     }
 }

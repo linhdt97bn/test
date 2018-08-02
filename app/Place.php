@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Place extends Model
 {
     protected $table = 'place';
+    protected $fillable = ['parent_id', 'place_name'];
 
-    public function tour()
+    public function roadmap_place()
     {
-        return $this->hasMany('App\Tour','place_id','id');
+        return $this->hasMany('App\RoadmapPlace');
     }
 }

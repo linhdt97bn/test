@@ -17,15 +17,11 @@ class CreateTourTable extends Migration
             $table->increments('id');
             $table->integer('users_id')->unsigned();
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('tentour');
-            $table->integer('place_id')->unsigned();
-            $table->foreign('place_id')->references('id')->on('place')->onDelete('cascade');
-            $table->tinyInteger('songaydi');
-            $table->tinyInteger('sokhachtoida');
-            $table->integer('giatour');
-            $table->text('mota');
-            $table->string('hinhanh')->nullable();
-            $table->boolean('trangthaitour')->default(1);
+            $table->string('tour_name');
+            $table->tinyInteger('customer_max');
+            $table->integer('price');
+            $table->string('image_tour')->nullable();
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

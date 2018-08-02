@@ -16,12 +16,17 @@ a {
 
 #header.full-header #primary-menu>ul {
     padding-right: 0; 
+    border-right: 1px solid #fff !important;
 }
 
 .modal-dangky, .modal-dangnhap, .modal-dattour, .modal-suathongtin {
     float: right; 
     padding: 3px 20px; 
     font-weight: bold;
+}
+
+.form-suathongtin input[type="radio"] {
+    margin-left: 100px;
 }
 
 .modal-header {
@@ -71,7 +76,7 @@ a {
 }
 
 .current:hover {
-    background-color: #FFEFDB;
+    background-color: #29487d;
 }
 
 .tour_container{
@@ -212,9 +217,13 @@ a {
 }
 
 #header-wrap{
-    background: #FFFFCC;
+    background: #4267b2;
     position: fixed;
     width: 100%;
+}
+
+#primary-menu ul li.current>a, #primary-menu ul li:hover>a {
+    color: #ffffff;
 }
 
 .paginate{
@@ -487,8 +496,14 @@ a {
 
 #top-search-trigger .icon-search3{
     font-size: 25px;
+    color: #fff;
 }
 
 #top-search-trigger .icon-line-cross{
     font-size: 25px;
+    color: #fff;
+}
+
+#top-search form input {
+    color: #fff;
 }

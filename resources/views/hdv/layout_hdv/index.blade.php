@@ -11,6 +11,31 @@
     <link href="admin/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
     <link href="css/hdv-admin.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        .lotrinh{
+            margin-top: 15px;
+        }
+
+        .lotrinh label, .lotrinh select, .lotrinh textarea{
+            margin-left: 20px;
+        }
+
+        .lotrinh .form-control {
+            width: 97%;
+        }
+
+        .ngaydi{
+            display: block;
+            margin-left: 10px !important;
+            color: red;
+        }
+
+        .glyphicon-remove{
+            cursor: pointer;
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div id="wrapper">
@@ -20,6 +45,7 @@
         @yield('content')
     </div>
     <!-- /#wrapper -->
+    <script src="CK/ckeditor.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/metisMenu.min.js"></script>
@@ -28,6 +54,7 @@
     <script src="admin/bower_components/DataTables/media/js/jquery.dataTables.min.js"></script>
     <script src="admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
     <script src="js/hdv-admin.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#dataTables-example').DataTable({

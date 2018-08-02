@@ -24,22 +24,22 @@
                 <tbody>
                     @foreach($bill as $dsb)
                         <tr class="odd gradeX" >
-                            <td><a href="{{route('chi-tiet',$dsb->tour_id)}}">{{$dsb->tour->tentour}}</a></td>
+                            <td><a href="{{route('chi-tiet',$dsb->tour_id)}}">{{$dsb->tour->tour_name}}</a></td>
                             <td>{{$dsb->users->email}}</td>
-                            <td>{{number_format($dsb->tongtien)}}</td>
-                            <td>{{$dsb->thoigianbatdau}}</td>
+                            <td>{{number_format($dsb->total_price)}}</td>
+                            <td>{{$dsb->time_start}}</td>
                             <td><?php echo date('Y-m-d', strtotime($dsb->created_at)) ?></td>
-                            @if($dsb->tinhtrangdon == 0) 
+                            @if($dsb->status == 0) 
                             <td style="color: blue">Đơn mới</td> 
-                            @elseif($dsb->tinhtrangdon == 1) 
+                            @elseif($dsb->status == 1) 
                             <td>Đưọc chấp nhận</td>
-                            @elseif($dsb->tinhtrangdon == 2) 
+                            @elseif($dsb->status == 2) 
                             <td style="color: red"> Bị từ chối</td>
-                            @elseif($dsb->tinhtrangdon == 3) 
+                            @elseif($dsb->status == 3) 
                             <td style="color: green"> Đã thanh toán</td> 
-                            @elseif($dsb->tinhtrangdon == 3) 
+                            @elseif($dsb->status == 3) 
                             <td style="color: green"><i class="glyphicon glyphicon-ok"></i> Đã thanh toán</td>  
-                            @elseif($dsb->tinhtrangdon == 4) 
+                            @elseif($dsb->status == 4) 
                                 <td style="color: #00FA9A"> Hoàn tất</td>   
                             @endif  
                         </tr>
@@ -68,9 +68,9 @@
                         <tr class="odd gradeX">
                             <td>{{$dt->tour->users->email}}</td>
                             <td>{{$dt->id}}</td>
-                            <td>{{number_format($dt->tongtien)}}</td>
-                            <td>{{number_format($dt->tongtien * 9/10)}}</td>
-                            <?php $sum += $dt->tongtien ?>                            
+                            <td>{{number_format($dt->total_price)}}</td>
+                            <td>{{number_format($dt->total_price * 9/10)}}</td>
+                            <?php $sum += $dt->total_price ?>                            
                         </tr>
                     @endforeach
                 </tbody>

@@ -14,7 +14,7 @@ class SuaNguoiDungRequest extends FormRequest
 
     public function rules()
     {
-        $this->session()->flash('loiSuaNguoiDung', true);
+        $this->session()->flash('edit_user', true);
         if ($this->checkpassword == "on") {
             return [
                 'name' => 'required|max:100|min:4',
@@ -22,8 +22,8 @@ class SuaNguoiDungRequest extends FormRequest
                 'password'=>'required|min:6|max:30',
                 'passwordAgain' =>'same:password'
             ];   
-        }else{
-            return[
+        }else {
+            return [
                 'name' => 'required|max:100|min:4',
                 'phone' => 'required|max:11|min:10'
             ];

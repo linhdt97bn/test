@@ -1,23 +1,22 @@
-dem = 0;
+var dem = 0;
+var dem_dia_diem = 0;
+var string_diadiem = '';
+var string_diadiem_add = '';
 $(document).ready(function() {
-    if($('div').hasClass('loiDangKyKhach') || $('div').hasClass('thanhcongkhach')){
-        $('#DangKyKhach').modal();
+    if($('div').hasClass('register')){
+        $('#DangKy').modal();
     }
-    if($('div').hasClass('loiDangKyHDV') || $('div').hasClass('thanhconghdv')){
-        $('#DangKyHDV').modal();
-    }
-    if($('div').hasClass('loiLogin') || $('div').hasClass('loiDangNhap')){
+
+    if($('div').hasClass('login')){
         $('#DangNhap').modal();
     }
 
-    if($('div').hasClass('loiDatTour')){
+    if($('div').hasClass('book-tour')){
         $('#DatTour').modal();
     }
-    if($('div').hasClass('successDatTour')){
-        alert('Đặt tour thành công.');
-    }
 
-    if($('div').hasClass('loiSuaThongTin') || $('div').hasClass('successSuaThongTin')){
+
+    if($('div').hasClass('edit-user')){
         $('#SuaThongTin').modal();
     }
 
@@ -275,6 +274,123 @@ $(document).ready(function() {
     $('#has-rate').click(function(){
         $('#form-rate').slideToggle();
         $(this).hide();
+    });
+
+    $('.delete-roadmap').click(function(){
+        var id = $(this).attr('id');
+        id = id.substring(15, id.length);
+        var tokenRoadmap = $('#tokenRoadmap').val();
+        var tour_id = $('#tour_id').val();
+        $.post("xoalotrinh", {id:id, tour_id:tour_id, _token:tokenRoadmap}, function(data){
+            if(data.flag == true){
+                alert('Lộ trình của tour không hợp lệ.');
+            }else{
+                $('#roadmap-' + id).remove();
+            }         
+        }, 'json');
+    });
+
+    $('.edit-roadmap').click(function(){
+        $('.edit-roadmap').remove();
+        $('.delete-roadmap').remove();
+        $('.add-roadmap').remove();
+        var edit_roadmap = '';
+        var id = $(this).attr('id');
+        id = id.substring(13, id.length);
+        var tokenRoadmap = $('#tokenRoadmap').val();
+        $.get("laydulieu", {id:id}, function(data){
+            edit_roadmap += '<form action="hdv/sua-lo-trinh/' + id + '" method="post">';
+            edit_roadmap += '<input type="hidden" name="_token" value="' + tokenRoadmap + '">';
+            edit_roadmap += '<label class="dd">Địa điểm</label>';
+            for (var i = 0; i < data.place_select.length; i++) {
+                dem_dia_diem++;
+                string_diadiem += data.place_select[i]['place_name'] + ',,';
+                edit_roadmap += '<span style="color:red; margin-left: 10px" id="dia_diem' + dem_dia_diem + '">' + data.place_select[i]['place_name'] + '<i class="glyphicon glyphicon-remove" onclick="xoadiadiem(' + dem_dia_diem + ')"></i></span>'
+            }
+            edit_roadmap += '<select class="form-control diadiem" onchange="thaydoidiadiem()">';
+            for (var i = 0; i < data.sodiadiem; i++) {
+                edit_roadmap += '<option value="' + data.diadiem[i]['id'] + '">' + data.diadiem[i]['place_name'] + '</option>';
+            }
+            edit_roadmap += '</select><br>';
+            edit_roadmap += '<input type="hidden" name="place" class="place-value" value="' + string_diadiem + '">';
+            edit_roadmap += '<label>Mô tả</label>';
+            edit_roadmap += '<textarea class="form-control" name="ngay" id="ngay" rows="8">' + data.description['description'] + '</textarea>'; 
+            edit_roadmap += '<div align="center" style="margin-top: 15px;"><button class="btn btn-primary">Sửa</button></div>'
+            edit_roadmap += '<script>CKEDITOR.replace("ngay");</script>';   
+            edit_roadmap += '</form>'         
+            $('#roadmap-' + id).html(edit_roadmap);
+        }, 'json');
+    });
+
+    $('.add-roadmap').click(function(){
+        $('.delete-roadmap').remove();
+        $('.edit-roadmap').remove();
+        $('.add-roadmap').remove();
+        var add_roadmap = '';
+        var tokenRoadmap = $('#tokenRoadmap').val();
+        var idtour = $('#tour_id').val();
+        $.get("laydulieu", {}, function(data){
+            add_roadmap += '<form action="hdv/them-lo-trinh" method="post">';
+            add_roadmap += '<input type="hidden" name="_token" value="' + tokenRoadmap + '">';
+            add_roadmap += '<input type="hidden" name="idtour" value="' + idtour + '">';
+            add_roadmap += '<label class="dd">Địa điểm</label>';
+            add_roadmap += '<select class="form-control diadiem" onchange="thaydoidiadiem()">';
+            for (var i = 0; i < data.sodiadiem; i++) {
+                add_roadmap += '<option value="' + data.diadiem[i]['id'] + '">' + data.diadiem[i]['place_name'] + '</option>';
+            }
+            add_roadmap += '</select><br>';
+            add_roadmap += '<input type="hidden" name="place" class="place-value" value="' + string_diadiem + '">';
+            add_roadmap += '<label>Mô tả</label>';
+            add_roadmap += '<textarea class="form-control" name="ngay" id="add-ngay" rows="8"></textarea>'; 
+            add_roadmap += '<div align="center" style="margin-top: 15px;"><button class="btn btn-success">Thêm</button></div>'
+            add_roadmap += '<script>CKEDITOR.replace("add-ngay");</script>';   
+            add_roadmap += '</form>'         
+            $('#add-roadmap').html(add_roadmap);
+        }, 'json');
+    });
+
+    var giatour = $('.form-dattour .giatour').val()
+    $('.form-dattour .adult-number').change(function(){
+        var adult_number = $(this).val() >= 0 ? $(this).val() : 0;
+        var child_number = $('.form-dattour .child-number').val() >= 0 ? $('.form-dattour .child-number').val() : 0;;
+        $('.tong-tien').html(giatour * adult_number + giatour * child_number / 2);
+    });
+
+    $('.form-dattour .child-number').change(function(){
+        var child_number = $(this).val() >= 0 ? $(this).val() : 0;
+        var adult_number = $('.form-dattour .adult-number').val() >= 0 ? $('.form-dattour .adult-number').val() : 0;;
+        $('.tong-tien').html(giatour * adult_number + giatour * child_number / 2);
+    });
+
+    $('.comment-author .hidden-comment').click(function(){
+        var id = $(this).attr('id').substring(13);
+        var token = $('#tokenComment').val();
+        $.post("hide-comment", {id:id, _token:token}, function(data){
+        }, 'json');
+        $('#comment-content-' + id + ' p').html('<<<< Bình luận đã bị ẩn >>>>').css('color', 'red');
+        $(this).remove();
+    })
+
+    $('.comment-author .delete-comment').click(function(){
+        var flag = confirm('Bạn chắc chắn xóa bình luận này chứ?');
+        if(flag) {
+            var id = $(this).attr('id').substring(15);
+            var token = $('#tokenComment').val();
+            $.post("delete-comment", {id:id, _token:token}, function(data){
+            }, 'json');
+            $('#li-comment-' + id).remove();
+        }    
+    })
+
+    $('.children .delete-reply').click(function(){
+        var flag = confirm('Bạn chắc chắn xóa trả lời này chứ?');
+        if(flag) {
+            var id = $(this).attr('id').substring(13);
+            var token = $('#tokenComment').val();
+            $.post("delete-comment", {id:id, _token:token}, function(data){
+            }, 'json');
+            $('#reply' + id).remove();
+        }    
     })
 
 });
@@ -334,8 +450,30 @@ function editBill(id){
                 $('#btnEditBill').after('<strong style="color:green">Sửa thành công<strong>');
                 $('#btnEditBill').remove();
                 $('.edit-bill').show();
+                $('.total-price').html(data.total_price + ' VNĐ');
                 dem = 0;
             }
         }, 'json');
     }
+}
+
+function xoadiadiem(dem_dia_diem){
+    var diadiemxoa = $('#dia_diem' + dem_dia_diem).text();
+    
+    var index = string_diadiem.search(diadiemxoa);
+    string_diadiem_left = string_diadiem.substring(0, index);
+    string_diadiem_right = string_diadiem.substring(index + diadiemxoa.length + 2, string_diadiem.length);
+    string_diadiem = string_diadiem_left + string_diadiem_right;
+    $('.place-value').val(string_diadiem);
+
+    $('#dia_diem' + dem_dia_diem).remove();
+}
+
+function thaydoidiadiem(){
+    var diadiem = $('.diadiem option:selected').text();
+    string_diadiem += diadiem + ',,';
+    $('.place-value').val(string_diadiem);
+    dem_dia_diem++;
+
+    $('.dd').after('<span style="color:red; margin-left: 10px" id="dia_diem' + dem_dia_diem + '">' + diadiem + '<i class="glyphicon glyphicon-remove" onclick="xoadiadiem(' + dem_dia_diem + ')"></i></span>');  
 }

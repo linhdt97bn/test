@@ -151,8 +151,11 @@ class TourController extends Controller
     {
         $cttour = Tour::find($id);
         $tourmoi = Tour::orderBy('created_at', 'desc')->take(6)->get();
+        if($cttour){
+            $tour_lien_quan = Tour::where('users_id', $cttour->users_id)->get();
+        }  
         
-        return view('client.page_client.chitiettour', compact('cttour', 'tourmoi'));
+        return view('client.page_client.chitiettour', compact('cttour', 'tourmoi', 'tour_lien_quan'));
     }
 
     public function edit($id)
@@ -193,13 +196,11 @@ class TourController extends Controller
     {
         $tour = Tour::find($id);
         if($tour->status == 1){
-            $tour->status = 0;
-            $tour->save();
+            $tour->update(['status' => 0]);
             return redirect()->back()->with('thongbao','Ẩn tour thành công');
         }
         else{
-            $tour->status = 1;
-            $tour->save();
+            $tour->update(['status' => 1]);
             return redirect()->back()->with('thongbao','Hiện tour thành công');
         }    
     }

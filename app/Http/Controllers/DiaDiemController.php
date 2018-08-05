@@ -24,43 +24,54 @@ class DiaDiemController extends Controller
     {
         $this-> validate($request,
             [
-                'tendiadiem'=>'required|unique:place,place_name'
+                'tendiadiem' => 'required|unique:place,place_name'
             ],
             [
-                'tendiadiem.required'=>'Tên địa điểm không đưọc để trống',
-                'tendiadiem.unique'=>'Địa điểm này đã tồn tại'
-            ]);
-        $dd = new Place();
-        $dd->parent_id = $request->province;
-        $dd->place_name = $request->tendiadiem;
-        $dd->save();
-        return redirect()->back()->with('thanhcong','Thêm đại điểm thành công');
+                'tendiadiem.required' => 'Tên địa điểm không đưọc để trống',
+                'tendiadiem.unique' => 'Địa điểm này đã tồn tại'
+            ]
+        );
+        if (isset($request->province)) {    
+            Place::create(['parent_id' => $request->province, 'place_name' => $request->tendiadiem]);
+            return redirect()->back()->with('add_place_success','Thêm địa điểm thành công');
+        }else {
+            Place::create(['parent_id' => 0, 'place_name' => $request->tendiadiem]);
+            return redirect()->back()->with('add_province_success','Thêm tỉnh thành công');
+        }
     }
-
 
     public function edit($id)
     {
-        $dd = Place::find($id);
-        $province = Place::where('parent_id', 0)->get();
-        return view('admin.page_admin.themdiadiem',compact('dd', 'province'));
+        $place = Place::find($id);
+        if ($place->parent_id != 0) {
+            $province = Place::where('parent_id', 0)->get();
+            return view('admin.page_admin.edit_place', compact('place', 'province'));
+        }else {
+            return view('admin.page_admin.edit_place', compact('place'));
+        }
+        
     }
 
     public function update(Request $request, $id)
     {  
         $this-> validate($request,
             [
-                'tendiadiem'=>'required|unique:place,place_name'
+                'tendiadiem' => 'required|unique:place,place_name'
             ],
             [
-                'tendiadiem.required'=>'Tên địa điểm không đưọc để trống',
-                'tendiadiem.unique'=>'Địa điểm này đã tồn tại'
+                'tendiadiem.required' => 'Tên địa điểm không đưọc để trống',
+                'tendiadiem.unique' => 'Địa điểm này đã tồn tại'
             ]);
         
         $diadiem = Place::find($id);
-        $diadiem->parent_id = $request->province;
-        $diadiem->place_name = $request->tendiadiem;
-        $diadiem->save();
-        return redirect('admin/diadiem')->with('thongbao','Sửa địa điểm thành công');
+        if (isset($request->province)) {
+            $diadiem->update(['parent_id' => $request->province, 'place_name' => $request->tendiadiem]);
+            return redirect()->back()->with('edit_place_success','Sửa địa điểm thành công');
+        }else {
+            $diadiem->update(['place_name' => $request->tendiadiem]);
+            return redirect()->back()->with('edit_province_success','Sửa tỉnh thành công');
+        }
+        
     }
 
     public function destroy($id)

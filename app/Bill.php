@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Bill extends Model
 {
@@ -28,5 +29,15 @@ class Bill extends Model
     public function tour()
     {
         return $this->belongsTo('App\Tour');
+    }
+
+    public function scopeGetIncome($query)
+    {
+        return $query->where('status', 3)->orWhere('status', 4)->get();
+    }
+
+    public function scopeGetLogBill($query)
+    {
+        return $query->where('users_id', Auth::user()->id)->paginate(10);
     }
 }

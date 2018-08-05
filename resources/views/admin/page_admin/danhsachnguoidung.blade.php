@@ -4,113 +4,113 @@
     <div class="container-fluid">       
         <div class="row">
             @if(isset($dskhach))
-            <div class="col-lg-12">
-                <h1 class="page-header">Danh sách
-                    <small>Khách hàng</small>
-                </h1>
-            </div>
-            <!-- /.col-lg-12 -->
-            @if(session('thongbao'))
-                <div class="alert alert-success thongbao">
-                    {{session('thongbao')}}
+                <div class="col-lg-12">
+                    <h1 class="page-header">Danh sách
+                        <small>Khách hàng</small>
+                    </h1>
                 </div>
-            @endif
-            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                <thead>
-                    <tr>
-                        <th>Họ tên</th>
-                        <th>Email</th>
-                        <th>Giới tính</th>
-                        <th>Số điện thoại</th>
-                        <th>Địa chỉ</th>
-                        <th>Sửa</th>
-                        <th>Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($dskhach as $dsk)
-                        <tr class="odd gradeX" >
-                            <td>{{$dsk->name}}</td>
-                            <td>{{$dsk->email}}</td>
-                            @if($dsk->gender == 1)
-                                <td>Nam</td>
-                            @elseif($dsk->gender === 0)
-                                <td>Nữ</td>
-                            @else
-                                <td></td>
-                            @endif
-                            <td>{{$dsk->phone}}</td>
-                            <td>{{$dsk->address}}</td> 
-                            <td><a href="admin/edit-user/{{$dsk->id}}"><button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></a></td>
-                            <td>         
-                            @if($dsk->bill->count() == 0)
-                                <form action="{{route('xoa-user',$dsk->id)}}" method="post">
-                                    @method('delete')
-                                    {{csrf_field()}}
-                                    <button type="submit" class="btn btn-danger" onclick="return xoa();"><i class="fa fa-trash-o  fa-fw"></i></button>
-                                </form>
-                            @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            @elseif(isset($dshdv))
-            <div class="col-lg-12">
-                <h1 class="page-header">Danh sách
-                    <small>Hướng dẫn viên</small>
-                </h1>
-            </div>
-            <!-- /.col-lg-12 -->
-                @if(session('thongbao'))
-                <div class="alert alert-success thongbao">
-                    {{session('thongbao')}}
-                </div>
+                <div class="clear"></div>
+                @if(session('delete_user_success'))
+                    <div class="alert alert-success text-center">
+                        {{session('delete_user_success')}}
+                    </div>
                 @endif
-            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                <thead>
-                    <tr>
-                        <th>Họ tên</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Địa chỉ</th>
-                        <th>Quyền tạo tour</th>
-                        <th>Sửa</th>
-                        <th>Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($dshdv as $dsh)
-                        <tr class="odd gradeX" >
-                            <td>{{$dsh->name}}</td>
-                            <td>{{$dsh->email}}</td>
-                            <td>{{$dsh->phone}}</td>
-                            <td>{{$dsh->address}}</td>              
-
-                            @if($dsh->status == "" || $dsh->status == 1)
-                            <td>
-                                <form action="{{route('cnhdv1',$dsh->id)}}" method="post" onclick="return chapnhan()">
-                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                    <button type="submit" class="btn btn-primary">Chưa có quyền</button>    
-                                </form>
-                            </td>
-                            @else
-                            <td >Đã có quyền</td>
-                            @endif
-                            <td><a href="admin/edit-user/{{$dsh->id}}"><button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></a></td>
-                            <td>
-                            @if($dsh->tour->count() == 0)
-                                <form action="{{route('xoa-user',$dsh->id)}}" method="post">
-                                    @method('delete')
-                                    {{csrf_field()}}
-                                    <button type="submit" class="btn btn-danger" onclick="return xoaHdv()"><i class="fa fa-trash-o  fa-fw"></i></button>
-                                </form>
-                            @endif
-                            </td>
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Giới tính</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Xóa</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($dskhach as $dsk)
+                            <tr class="odd gradeX" >
+                                <td>{{ $dsk->name }}</td>
+                                <td>{{ $dsk->email }}</td>
+                                @if($dsk->gender == 1)
+                                    <td>Nam</td>
+                                @elseif($dsk->gender === 0)
+                                    <td>Nữ</td>
+                                @else
+                                    <td></td>
+                                @endif
+                                <td>{{ $dsk->phone }}</td>
+                                <td>{{ $dsk->address }}</td> 
+                                <td>         
+                                @if($dsk->bill->count() == 0)
+                                    <form action="{{ route('xoa-user', $dsk->id) }}" method="post">
+                                        @method('delete')
+                                        {{csrf_field()}}
+                                        <button type="submit" class="btn btn-danger" onclick="return xoa();"><i class="fa fa-trash-o  fa-fw"></i></button>
+                                    </form>
+                                @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @elseif(isset($dshdv))
+                <div class="col-lg-12">
+                    <h1 class="page-header">Danh sách
+                        <small>Hướng dẫn viên</small>
+                    </h1>
+                </div>
+                <div class="clear"></div>
+                @if(session('permit_success'))
+                    <div class="alert alert-success text-center">
+                        {{session('permit_success')}}
+                    </div>
+                @elseif(session('delete_user_success'))
+                    <div class="alert alert-success text-center">
+                        {{session('delete_user_success')}}
+                    </div>
+                @endif
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Quyền tạo tour</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($dshdv as $dsh)
+                            <tr class="odd gradeX" >
+                                <td>{{ $dsh->name }}</td>
+                                <td>{{ $dsh->email }}</td>
+                                <td>{{ $dsh->phone }}</td>
+                                <td>{{ $dsh->address }}</td>              
+
+                                @if($dsh->status == "" || $dsh->status == 1)
+                                    <td>
+                                        <form action="{{ route('cnhdv1', $dsh->id) }}" method="post" onclick="return chapnhan()">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-primary">Chưa có quyền</button>    
+                                        </form>
+                                    </td>
+                                @else
+                                    <td>Đã có quyền</td>
+                                @endif
+                                <td>
+                                    @if($dsh->tour->count() == 0)
+                                        <form action="{{ route('xoa-user',$dsh->id) }}" method="post">
+                                            @method('delete')
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-danger" onclick="return xoaHdv()"><i class="fa fa-trash-o  fa-fw"></i></button>
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @endif
         </div>    
     </div>
@@ -128,8 +128,5 @@
         function chapnhan(){
             return confirm('Bạn có chắc chắn cấp quyền cho hướng dẫn viên này?')
         }
-        // $(document).ready(function(){
-        //     $('.thongbao').setTimeout(slideUp(),3000);
-        // })
     </script>
 @endsection

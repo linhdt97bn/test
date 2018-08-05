@@ -21,6 +21,6 @@ class RoadmapPlace extends Model
 
     public function scopeTourPlace($query, $idp)
     {
-        return $query->where('place_id', $idp);
-    } 
+        return $query->select('roadmap_id')->where('place_id', $idp)->get()->toArray();
+    }  
 }

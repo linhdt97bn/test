@@ -17,7 +17,7 @@
             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                 <thead>
                     <tr align="center">
-                        <th>ID</th>
+                        <th>Loại địa điểm</th>
                         <th>Tên địa điểm du lịch</th>
                         <th>Sửa</th>
                         <th>Xóa</th>
@@ -26,12 +26,20 @@
                 <tbody>
                     @foreach($dsdd as $ds)
                         <tr class="odd gradeX" align="center">
-                            <td>{{$ds->id}}</td>
+                            @if($ds->parent_id == 0)
+                                <td>Tỉnh</td>
+                            @else
+                                <td>Địa điểm</td>
+                            @endif
                             <td>{{$ds->place_name}}</td>
-                            <td><a href="{{route('diadiem.edit',$ds->id)}}"><button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button></a></td>
+                            <td>
+                                <a href="{{ route('diadiem.edit', $ds->id) }}">
+                                    <button class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></button>
+                                </a>
+                            </td>
                             <td>
                                 @if($ds->roadmap_place->count() == 0 && $ds->parent_id != 0)
-                                <form action="{{route('diadiem.destroy',$ds->id)}}" method="post">
+                                <form action="{{ route('diadiem.destroy', $ds->id) }}" method="post">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     @method('delete')
                                     <button type="submit" onclick="return xoa()" class="btn btn-danger"><i class="fa fa-trash-o fa-fw"></i></button>

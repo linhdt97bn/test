@@ -13,21 +13,21 @@
                             <div class="tour_container">
                                 <div class="img_container">
                                     <a href="{{route('chi-tiet', $t_p->id)}}">
-                                        <img src="upload/{{$t_p->roadmap->tour->image_tour}}" width="360" height="250" class="img-responsive">
-                                        <span class="price">{{number_format($t_p->roadmap->tour->price)}}<sup>VNĐ</sup></span>
+                                        <img src="upload/{{$t_p->image_tour}}" width="360" height="250" class="img-responsive">
+                                        <span class="price">{{number_format($t_p->price)}}<sup>VNĐ</sup></span>
                                     </a>
                                 </div>
                                 <div class="tour_title">
-                                    <h3>{{$t_p->roadmap->tour->tour_name}}</h3>
+                                    <h3>{{$t_p->tour_name}}</h3>
                                     <div class="rating">
                                         @for($k = 0; $k < 5; $k++)
-                                            @if($k < $t_p->roadmap->tour->rate->avg('sodiem'))
+                                            @if($k < $t_p->rate->avg('sodiem'))
                                                 <i class="icon-smile voted"></i>
                                             @else
                                                 <i class="icon-smile"></i>
                                             @endif
                                         @endfor
-                                        <span>({{$t_p->roadmap->tour->rate->count()}} lượt đánh giá)</span>	
+                                        <span>({{$t_p->rate->count()}} lượt đánh giá)</span>	
                                     </div>
                                 </div>
                             </div>

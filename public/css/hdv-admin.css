@@ -15,3 +15,56 @@ form span {
    margin-bottom:0px; 
    text-align: center;
 }
+
+.add-tour, .edit-tour, .add-province, 
+.add-place, .edit-province, .edit-place {
+   margin-top: 20px;
+}
+
+.edit-province, .edit-place, .add-province, .add-place {
+	width: 80%; 
+}
+
+.add-province, .add-place {
+   display: none;
+}
+
+.add-province div.btn, .add-place div.btn, .edit-province div.btn, 
+.edit-place div.btn, .add-tour div.btn, .edit-tour div.btn {
+	width: 100%; 
+   font-size: 30px;
+}
+
+.add-province .form-control, .add-place .form-control, .edit-province .form-control, 
+.edit-place .form-control,  .add-tour .form-control, .edit-tour .form-control {
+	margin-bottom: 20px;
+}
+
+.clear {
+   clear: both;
+}
+
+.newbill button {
+   width: 110px;
+   margin-top: 5px;
+}
+
+.tu-choi {
+   top: 250px;
+}
+
+.tu-choi button {
+   display: block;
+}
+
+.tu-choi input[type="text"] {
+   margin-top: 5px;
+}
+
+.tu-choi label {
+   margin-top: 15px;
+}
+
+.tu-choi input[type="text"] {
+   width: 80%;
+}

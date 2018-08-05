@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Tour extends Model
 {
@@ -43,7 +44,12 @@ class Tour extends Model
 
     public function scopeSearch($query, $string)
     {
-        return $query->where([['tour_name', 'like', '%'.$string.'%'],['status', 1]])
+        return $query->where([['tour_name', 'like', '%' . $string . '%'], ['status', 1]])
             ->orwhere([['price', $string], ['status', 1]]);
+    }
+
+    public function scopeGetBillHDV($query)
+    {
+        return $query->where('users_id', Auth::user()->id)->get();
     }
 }

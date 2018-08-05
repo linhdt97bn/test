@@ -14,13 +14,13 @@
 
                     <li class="current"><a>Địa điểm</a>
                         <ul>
-                            @foreach($diadiem as $province)
-                                @if($province->parent_id == 0)
+                            @foreach ($diadiem as $province)
+                                @if ($province->parent_id == 0)
                                 <li>
                                     <a>{{$province->place_name}}</a>
                                     <ul>
-                                        @foreach($diadiem as $place)
-                                            @if($place->parent_id == $province->id)
+                                        @foreach ($diadiem as $place)
+                                            @if ($place->parent_id == $province->id)
                                                 <li><a href="{{route('tour-dia-diem', $place->id)}}">{{$place->place_name}}</a></li>
                                             @endif
                                         @endforeach
@@ -50,12 +50,7 @@
                         </li>  
                         <li class="current"><a href="{{route('dang-xuat')}}">Đăng xuất</a></li>
                     @else
-                        <li class="current"><a>Đăng ký</a>
-                            <ul>
-                                <li><a data-toggle="modal" data-target="#DangKyKhach">Đăng ký khách du lịch</a></li>
-                                <li><a data-toggle="modal" data-target="#DangKyHDV">Đăng ký hướng dẫn viên</a></li>
-                            </ul>
-                        </li>
+                        <li class="current"><a data-toggle="modal" data-target="#DangKy">Đăng ký</a></li>
                         <li class="current"><a data-toggle="modal" data-target="#DangNhap">Đăng nhập</a></li>
                     @endif
                 </ul>

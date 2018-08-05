@@ -19,16 +19,19 @@
             .entry-content ul li {
                 margin-left: 50px;
             }
-
             .entry-content p {
                 margin-bottom: 10px;
             }
+            .glyphicon-remove {
+                cursor: pointer;
+            }
         </style>
 
+        <script src="CK/ckeditor.js"></script>
         <script src="js/jquery-2.2.4.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/mytour.js"></script>   
-        <script src="js/wow.min.js"></script>
+        <script src="js/wow.min.js"></script>      
         <script>
             new WOW().init();
         </script>

@@ -18,4 +18,9 @@ class Roadmap extends Model
     {
     	return $this->hasMany('App\RoadmapPlace');
     }
+
+    public function scopeGetDistinctTourId($query, $id)
+    {
+        return $query->whereIn('id', $id)->distinct()->get(['tour_id'])->toArray();
+    }
 }

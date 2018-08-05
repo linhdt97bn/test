@@ -18,7 +18,7 @@ $(document).ready(function(){
         var string_ckeditor = '';
 
     	for (var i = 1; i <= songaydi; i++) {
-    		str += '<div class="lotrinh" id="lotrinh' + i + '"> <label class="ngaydi">Ngày ' + i + '</label> <label class ="dd' + i + '">Địa điểm</label> <select class="form-control diadiem" id ="diadiem' + i + '" onchange="thaydoidiadiem(' + i + ')"> ' + diadiem + ' </select><br> <input type="hidden" name="place_' + i + '" id="place_' + i + '"> <label>Mô tả</label> <textarea class="form-control" id="ngay' + i + '" name="ngay' + i + '" rows="8"></textarea> </div>';
+    		str += '<div class="lotrinh" id="lotrinh' + i + '"> <label class="ngaydi">Ngày ' + i + '</label> <label class ="dd' + i + '">Địa điểm</label> <select class="form-control diadiem" id ="diadiem' + i + '" onchange="thaydoidiadiem(' + i + ')"> ' + diadiem + ' </select> <input type="hidden" name="place_' + i + '" id="place_' + i + '"> <label>Mô tả</label> <textarea class="form-control" id="ngay' + i + '" name="ngay' + i + '" rows="8"></textarea> </div>';
             string_ckeditor += '<script>CKEDITOR.replace("ngay' + i + '");</script>';
     	}
     	$('.lotrinhdi').html(str);
@@ -35,6 +35,16 @@ $(document).ready(function(){
         dem++;
         $('.dd' + id).after('<span id="dia_diem' + dem + '">' + diadiem + '<i class="glyphicon glyphicon-remove" onclick="xoadiadiem(' + dem + ',' + id + ')"></i></span>');
         $('#place_' + id).val(string_diadiem_1);
+    });
+
+    $('#add-place').click(function(){
+        $('.add-place').show();
+        $('.add-province').hide();
+    });
+
+    $('#add-province').click(function(){
+        $('.add-province').show();
+        $('.add-place').hide();
     });
 });
 

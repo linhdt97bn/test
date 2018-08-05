@@ -11,7 +11,8 @@ class Comment extends Model
         'users_id', 
         'tour_id',
         'parent_id', 
-        'content'
+        'content',
+        'status'
     ]; 
 
     public function users()

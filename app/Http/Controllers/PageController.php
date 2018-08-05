@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\DangKyKhachRequest;
-use App\Http\Requests\DangKyHDVRequest;
+use App\Http\Requests\DangKyRequest;
 use App\Http\Requests\DangNhapRequest;
 use App\Http\Requests\DatTourRequest;
 use App\Http\Requests\SuaNguoiDungRequest;
@@ -14,6 +13,7 @@ use Auth;
 use App\Tour;
 use App\Bill;
 use App\Rate;
+use App\Roadmap;
 use App\RoadmapPlace;
 
 class PageController extends Controller
@@ -25,48 +25,33 @@ class PageController extends Controller
         return view('client.page_client.trangchu', compact('tour'));
     }
 
-    public function postDangKyKhach(DangKyKhachRequest $req)
+    public function postDangKy(DangKyRequest $req)
     {
     	for ($i=0; $i < strlen($req->phone); $i++) { 
-            if(!((0 < $req->phone[$i]  && $req->phone[$i] <= 9 ) || $req->phone[$i] === '0')){
-                return redirect()->back()->with('loiSodienthoai', 'Kiểm tra lại số điện thoại.');
+            if (!((0 < $req->phone[$i] && $req->phone[$i] <= 9) || $req->phone[$i] === '0')) {
+                return redirect()->back()->with('error_phone', 'Kiểm tra lại số điện thoại.');
             } 
     	}
-
+        $password = $req->password;
         $req->merge([
-            'password' => Hash::make($req->password),
-            'role' => 1,
+            'password' => Hash::make($password),
             'avatar' => 'nouser.jpg'
         ]);
-        User::create($req->all());
-        return redirect()->back()->with('thanhcongkhach', 'Đăng ký thành công');
-    }
 
-    public function postDangKyHDV(DangKyHDVRequest $req)
-    {
-        for ($i=0; $i < strlen($req->phone); $i++) { 
-            if(!((0 < $req->phone[$i]  && $req->phone[$i] <= 9 ) || $req->phone[$i] === '0')){
-                return redirect()->back()->with('loiSodienthoaiHDV', 'Kiểm tra lại số điện thoại.');
-            }
+        if ($req->role == 1 || $req->role == 2) {
+            User::create($req->all());
+            Auth::attempt(['email' => $req->email, 'password' => $password]);        
         }
-
-        $req->merge([
-            'password' => Hash::make($req->password),
-            'role' => 2,
-            'avatar' => 'nouser.jpg'
-        ]);
-        User::create($req->all());
-        return redirect()->back()->with('thanhconghdv', 'Đăng ký thành công');
+        return redirect()->back();   
     }
 
     public function postDangNhap(DangNhapRequest $req)
     {
-        $check_user = array('email'=>$req->email, 'password'=>$req->password);
-        $remember = $req->ghinho;
-        if(Auth::attempt($check_user, $remember)){
+        $check_user = ['email' => $req->email, 'password' => $req->password];
+        if(Auth::attempt($check_user, $req->ghinho)){
             return redirect()->back();
         }else{
-            return redirect()->back()->with('loiLogin', 'Sai tài khoản hoặc mật khẩu!');
+            return redirect()->back()->with('error_login', 'Sai tài khoản hoặc mật khẩu!');
         }
     }
 
@@ -78,7 +63,9 @@ class PageController extends Controller
 
     public function getTourDiaDiem($iddd)
     {
-        $tour_place = RoadmapPlace::tourPlace($iddd)->get();
+        $place_id = RoadmapPlace::tourPlace($iddd);
+        $tour_id = Roadmap::getDistinctTourId($place_id);
+        $tour_place = Tour::find($tour_id);
         return view('client.page_client.danhsachtour', compact('tour_place'));
     } 
 
@@ -88,75 +75,35 @@ class PageController extends Controller
         return view('client.page_client.danhsachtour', compact('tour_hdv'));
     }
 
-    public function postDatTour(DatTourRequest $request)
-    {
-        $tour = Tour::find($request->idtour);
-
-        if(!($request->adult_number + $request->child_number <= $tour->customer_max)){
-            return redirect()->back()->with('loiKhachMax', 'Số khách đăng ký phải nhỏ hơn số khách tối đa');
-        }
-
-        if( strtotime($request->thoigianbatdau) < time()){
-            return redirect()->back()->with('loiThoiGian', 'Vui lòng kiểm tra lại thời gian vừa nhập');
-        }
-
-        $checkBill = Bill::where([['users_id', Auth::user()->id], ['status', 0], ['tour_id', $request->idtour]])->first();
-
-        if($checkBill){
-            return redirect()->back()->with('loiDonTour', 'Bạn đã đặt tour này rồi.');
-        }
-
-        $bill = new Bill();
-        $bill->tour_id = $tour->id;
-        $bill->users_id = Auth::user()->id;
-        $bill->total_price = $tour->price;
-        $bill->status = 0;
-        $bill->time_start = $request->thoigianbatdau;
-        $bill->adult_number = $request->adult_number;
-        $bill->child_number = $request->child_number;
-
-        if($request->check_request == "on"){
-            $bill->request = $request->request;
-        }
-        
-        $bill->save();
-        return redirect()->back()->with('successDatTour', 'Gửi đơn đặt tour thành công.');
-    }
-
-    public function getLichSu()
-    {
-        $lichsu = Bill::where('users_id', Auth::user()->id)->paginate(10);
-        return view('client.page_client.lichsudattour', compact('lichsu'));
-    }
-
     public function getDanhGia($idtour, Request $request)
     {
         if($request->sodiem == 0) return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
 
         $flag = false;
         $tour = Tour::find($idtour);
-        if($tour){
+        if ($tour) {
             foreach ($tour->bill as $value) {
-                if($value->tinhtrangdon == 4 && $value->users_id == Auth::user()->id ){
+                if ($value->status == 4 && $value->users_id == Auth::user()->id) {
                     $flag = true;
                     break;
                 }
             }
         }
 
-        if($flag){
+        if ($flag) {
             $rate = Rate::where([['tour_id', $tour->id], ['users_id', Auth::user()->id]])->get();
-            if(count($rate) > 0){
+            if (count($rate) > 0) {
                 return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
-            }else{
-                $rate = new Rate();
-                $rate->tour_id = $idtour;
-                $rate->users_id = Auth::user()->id;
-                $rate->sodiem = $request->sodiem;
-                $rate->save();
+            }else {
+                $request->merge([
+                    'tour_id' => $idtour,
+                    'users_id' => Auth::user()->id,
+                    'point' => $request->sodiem
+                ]);
+                Rate::create($request->all());
                 return redirect()->back()->with('successRate', 'Cảm ơn bạn đã đánh giá tour');
             }        
-        }else{
+        }else {
             return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
         }
     }
@@ -174,23 +121,23 @@ class PageController extends Controller
         $user = Auth::user();
 
         for ($i=0; $i < strlen($request->phone); $i++) { 
-            if(!((0 < $request->phone[$i]  && $request->phone[$i] <= 9 ) || $request->phone[$i] === '0')){
-                return redirect()->back()->with('loiSuaSoDienThoai', 'Kiểm tra lại số điện thoại.');
+            if (!((0 < $request->phone[$i]  && $request->phone[$i] <= 9 ) || $request->phone[$i] === '0')) {
+                return redirect()->back()->with('error_edit_phone', 'Kiểm tra lại số điện thoại.');
             }
         }
 
         if (is_numeric($request->birthday)) {
             $y = date('Y');
-            if(!(($y - $request->birthday <= 100) && ($y - $request->birthday >= 3))) {
-                return redirect()->back()->with('loiNamSinh', 'Vui lòng nhập đúng năm sinh');
+            if (!(($y - $request->birthday <= 100) && ($y - $request->birthday >= 3))) {
+                return redirect()->back()->with('error_birthday', 'Vui lòng nhập đúng năm sinh');
             }
         }
     
-        if($request->hasFile('anhdaidien')){
+        if ($request->hasFile('anhdaidien')) {
             $file = $request->file('anhdaidien');
             $duoi = $file->getClientOriginalExtension();
             if($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg"){
-                return redirect()->back()->with('loiAnhDaiDien', 'Định dạng ảnh phải là jpg, png, jpeg');
+                return redirect()->back()->with('error_avatar', 'Định dạng ảnh phải là jpg, png, jpeg');
             }
 
             $name = $file->getClientOriginalName();
@@ -208,6 +155,6 @@ class PageController extends Controller
         }
 
         $user->update($request->all());
-        return redirect()->back()->with('suathanhcong', 'Sửa thông tin thành công');
+        return redirect()->back()->with('success_edit_user', 'Sửa thông tin thành công');
     }
 }

@@ -7,52 +7,20 @@ use App\User;
 use App\Tour;
 use App\Place;
 use App\Bill;
+use App\Roadmap;
+use App\RoadmapPlace;
 use Auth;
 
 class HdvController extends Controller
 {
-    public function trangchu(){
+    public function trangchu()
+    {
     	return view('hdv.page_hdv.trangchu');
     }
 
-    public function getDSdontour(){
-        $bill = Tour::where('users_id', Auth::user()->id)->get();
-        return view('hdv.page_hdv.danhsachdondattour', compact('bill'));
-    }
-
-    public function getDSdontourmoi(){
-        $newbill = Tour::where('users_id', Auth::user()->id)->get();
-        return view('hdv.page_hdv.danhsachdondattour', compact('newbill'));
-    }
-
-    public function getDSdontourchapnhan(){
-        $billcn = Tour::where('users_id',Auth::user()->id)->get();
-        return view('hdv.page_hdv.danhsachdondattour',compact('billcn'));
-    }
-
-    public function getDSdontourthanhtoan(){
-        $billtt = Tour::where('users_id', Auth::user()->id)->get();
-        return view('hdv.page_hdv.danhsachdondattour', compact('billtt'));
-    }
-
-    public function postChapnhandon($idd){
-        $don = Bill::find($idd)->update(['tinhtrangdon' => 1]);
-        return redirect()->back()->with('thongbao','Chấp nhận thành công');
-    }
-
-    public function postTuchoidon($idd){
-        $don = Bill::find($idd)->update(['tinhtrangdon' => 2]);
-        return redirect()->back()->with('thongbao','Từ chối thành công');
-    }
-
-    public function postXacnhanditour($idd){
-        $don = Bill::find($idd)->update(['tinhtrangdon' => 4]);
-        return redirect()->back()->with('thongbao','Xác nhận thành công');
-    }
-
-    public function postXacnhantt($idd){
-        $don = Bill::find($idd)->update(['tinhtrangdon' => 3]);
-        return redirect()->back()->with('thongbao','Xác nhận thành công');
+    public function getListBill(){
+        $bill = Tour::getBillHDV();
+        return view('hdv.page_hdv.list_bill', compact('bill'));
     }
 
     public function postXoaTour($id){
@@ -60,34 +28,84 @@ class HdvController extends Controller
         return redirect()->back()->with('thongbao','Xóa thành công');
     }
 
-    public function getEditBill($id){
-        $bill = Bill::find($id);
-        return view('hdv.page_hdv.suabill')->with(compact('bill'));
+    public function postThemLoTrinh(Request $request)
+    {
+        $request->session()->flash('add_roadmap', true);
+        $this->validate($request,
+            [
+                'place' => 'required',
+                'ngay' => 'required'
+            ],
+            [
+                'place.required' => 'Địa điểm không được để trống.',
+                'ngay.required' => 'Lộ trình ngày đi không được để trống.'
+            ]
+        );
+        $request->merge([ 
+            'description' => $request->ngay ,
+            'tour_id' => $request->idtour
+        ]);
+        $roadmap = Roadmap::create($request->only('description', 'tour_id'));
+
+        $place = explode(',,', trim($request->place, ',,')); 
+
+        for ($i = 0; $i < sizeof($place); $i++) { 
+            $place_add = Place::where('place_name', $place[$i])->first();
+
+            $request->merge([
+                'place_id' => $place_add->id,
+                'roadmap_id' => $roadmap->id
+            ]);
+            RoadmapPlace::create($request->only('place_id', 'roadmap_id'));
+        }
+
+        return redirect()->back(); 
     }
-    public function postEditBill(Request $request,$id){
-        $bill = Bill::find($id);
-        $max = $bill->tour->sokhachtoida;
-        $time = date('Y-m-d');
-            $this->validate($request,
-                [
-                    'sokhachdangky'=>'required|numeric|min:1|max:'.$max,
-                    'thoigianbatdau'=>"required|date|after:".$time,
-                ],
-                [
-                    'sokhachdangky.numeric'=>"Nhập vào 1 số",
-                    'sokhachdangky.max'=>'Số khách đăng ký vượt quá quy định',
-                    'sokhachdangky.required'=>"Nhập vào số khách đăng ký",
-                    'sokhachdangky.min'=>"Số khách đăng ký phải lớn hơn 0",
-                    'thoigianbatdau.required'=>"Nhập vào thời gian bắt đầu",
-                    'thoigianbatdau.date'=>'Không đúng định dạng ngày',
-                    'thoigianbatdau.after'=>'Thời gian bắt đầu phải sau ngày hiện tại',
+
+    public function postSuaLoTrinh($id, Request $request)
+    {
+        $request->session()->flash('edit_roadmap', true);
+        $this->validate($request,
+            [
+                'place' => 'required',
+                'ngay' => 'required'
+            ],
+            [
+                'place.required' => 'Địa điểm không được để trống.',
+                'ngay.required' => 'Lộ trình ngày đi không được để trống.'
+            ]
+        );
+        $request->merge(['description' => $request->ngay]);
+        Roadmap::find($id)->update($request->only('description'));
+        $place_delete = RoadmapPlace::where('roadmap_id', $id)->get();
+
+        $place = explode(',,', trim($request->place, ',,'));
+        $flag_delete = true;
+        foreach ($place_delete as $p_d) {
+            $flag_delete = true;
+            for ($i = 0; $i < sizeof($place); $i++) { 
+                if($p_d->place->place_name == $place[$i]) {
+                    $flag_delete = false;
+                }
+            } 
+            if($flag_delete == true){
+                RoadmapPlace::find($p_d->id)->delete();
+            }
+        }    
+
+        for ($i = 0; $i < sizeof($place); $i++) { 
+            $place_check = Place::where('place_name', $place[$i])->first();
+
+            $roadmap_place = RoadmapPlace::where([['roadmap_id', $id], ['place_id', $place_check->id]])->get();
+            if($roadmap_place->count() == 0 ) {
+                $request->merge([
+                    'place_id' => $place_check->id,
+                    'roadmap_id' => $id
                 ]);
-        $bill->sokhachdangky = $request->sokhachdangky;
-        $bill->thoigianbatdau = $request->thoigianbatdau;
-        $bill->save();
-        if($bill->tinhtrangdon ==1)
-            return redirect('hdv/dsdontourchapnhan')->with('thongbao','Sửa thành công');
-        else
-            return redirect('hdv/dsdontourthanhtoan')->with('thongbao','Sửa thành công');
+                RoadmapPlace::create($request->only('place_id', 'roadmap_id'));
+            }
+        }
+
+        return redirect()->back(); 
     }
 }

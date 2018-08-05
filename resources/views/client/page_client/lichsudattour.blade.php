@@ -32,7 +32,7 @@
                                 <a href="{{ route('chi-tiet', $ls->tour->id) }}">{{$ls->tour->tour_name}}</a>
                             </td>
                             <td class="cart-product-price">
-                                <span class="amount">{{ number_format($ls->total_price) }} VNĐ</span>
+                                <span class="amount total-price">{{ number_format($ls->total_price) }} VNĐ</span>
                             </td>
                             <td class="cart-product-price">
                                 <span class="amount" id="time-start-{{$ls->id}}">{{ $ls->time_start }}</span>

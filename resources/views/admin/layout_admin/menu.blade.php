@@ -35,16 +35,7 @@
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
-            </li>          
-            <li>
-                <a href=""><i class="glyphicon glyphicon-pencil"></i>Quản lí bình luận<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="{{route('dsbinhluan')}}">Danh sách bình luận</a>
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
-            </li>                       
+            </li>                             
             <li>
                 <a href=""><i class="glyphicon glyphicon-road"></i>Quản lí địa điểm du lịch<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

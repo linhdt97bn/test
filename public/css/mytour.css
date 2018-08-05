@@ -61,6 +61,16 @@ a {
     margin-left: 20px;
 }
 
+.form-dangky .role-1 {
+    display: block;
+    margin: 20px 0 0 100px;
+}
+
+.form-dangky .role-2 {
+    display: block;
+    margin: 5px 0 0 100px;
+}
+
 #btnKhach, #btnHDV, #btnDangNhap, #btnDatTour, #btnSuaThongTin {
     width: 20%;
     margin-top: 15px;
@@ -237,6 +247,7 @@ a {
 #thongtinhdv {
     padding: 25px; 
     background-color: lavender;
+    display: none;
 }
 
 #thongtinhdv img {
@@ -281,6 +292,7 @@ a {
 #comments {
     margin-top: 30px;
     padding-top: 30px;
+    display: none;
 }
 .reply-comment i{
     margin-left: 5px;
@@ -314,6 +326,7 @@ a {
 
 .formReply {
     margin-bottom: 0px;
+    display: none;
 }
 
 .post-navigation a em {
@@ -378,6 +391,10 @@ a {
     font-size:40px;
     color:#fd9727;
     line-height:40px
+}
+
+.boxRatingCmt .crt .lcrt b i{
+    font-size: 35px;
 }
 
 .boxRatingCmt .crt .lcrt b i{
@@ -464,6 +481,28 @@ a {
     padding:1px 20px
 }
 
+.boxRatingCmt .crt .rcrt .r i{
+    color: yellow;
+    font-size: 16px;
+}
+
+.no-rates {
+    width: 0%;
+}
+
+.rated {
+    margin-top: 10px; 
+    color: #A9A9A9;
+}
+
+#dg1, #dg2, #dg3, #dg4, #dg5 {
+    color: #dddddd;
+}
+
+#form-rate {
+    display: none;
+}
+
 #divtimkiem {
     position: fixed;
     z-index: 10; 
@@ -506,4 +545,37 @@ a {
 
 #top-search form input {
     color: #fff;
+}
+
+.timeline-title {
+    box-sizing: border-box; 
+    font-size: 20px; 
+    color: rgb(237, 12, 110); 
+    margin-bottom: 15px; 
+    position: relative; 
+    font-weight: bold;
+}
+
+.hide-comment {
+    color: red;
+}
+
+#danhgia .col-sm-12 {
+    font-size: 2em; 
+    margin: 30px 0 0 30px;
+}
+
+.request {
+    display: none;
+}
+
+.admin {
+    color: blue; 
+    float: right; 
+    margin-right: 20px;
+}
+
+.comment-author .btn {
+    float: right;
+    margin-right: 5px;
 }

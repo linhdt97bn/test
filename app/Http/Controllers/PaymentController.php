@@ -61,10 +61,8 @@ class PaymentController extends Controller
 
             //dd($result);
             if($result->getState() == 'approved'){
-                $bill = Bill::find($idbill);
-                $bill->tinhtrangdon = 3;
-                $bill->save();
-
+                $request->merge(['status' => 3]);
+                Bill::find($idbill)->update($request->only('status'));
                 return redirect()->route('lich-su')->with('thanhcongTT','Thanh toán thành công');
             }
             return "Thanh toán thất bại";
@@ -77,24 +75,24 @@ class PaymentController extends Controller
     {
         $bill = Bill::find($request->idbill);
         if($bill){
-            if (!($bill->users_id == Auth::user()->id && $bill->tinhtrangdon == 1)) {
+            if (!($bill->users_id == Auth::user()->id && $bill->status == 1)) {
                 return redirect()->back()->with('loiThanhToan', 'Lỗi thanh toán.');
             }else{
                 $payer = new Payer();
                 $payer->setPaymentMethod("paypal");
 
                 $item1 = new Item();
-                $item1->setName('ID don tour: '.$bill->id." Ten tour: ".$bill->tour->tentour)
+                $item1->setName('ID don tour: '.$bill->id." Ten tour: ".$bill->tour->tour_name)
                     ->setCurrency('USD')
                     ->setQuantity(1)
-                    ->setPrice(($bill->tongtien)/22500);
+                    ->setPrice(($bill->total_price)/22500);
                 
                 $itemList = new ItemList();
                 $itemList->setItems(array($item1));
 
                 $amount = new Amount();
                 $amount->setCurrency("USD")
-                    ->setTotal(($bill->tongtien)/22500);
+                    ->setTotal(($bill->total_price)/22500);
 
                 $transaction = new Transaction();
                 $transaction->setAmount($amount)

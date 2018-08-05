@@ -14,13 +14,13 @@ class DatTourRequest extends FormRequest
 
     public function rules()
     {
-        $this->session()->flash('errorDatTour', true);
+        $this->session()->flash('book_tour', true);
         if ($this->check_request == "on") {
             return [
                 'thoigianbatdau' => 'required|date',
                 'adult_number' => 'required|integer|min:1',
                 'child_number' => 'required|integer|min:0',
-                'request' => 'required',
+                'request' => 'required'
             ];
         }else{
             return [

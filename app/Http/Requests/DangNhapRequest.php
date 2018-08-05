@@ -14,7 +14,7 @@ class DangNhapRequest extends FormRequest
 
     public function rules()
     {
-        $this->session()->flash('loiDangNhap', true);
+        $this->session()->flash('login', true);
         return [
             'email'=> 'required|email',
             'password'=> 'required|max:30|min:6'

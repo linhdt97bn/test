@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DangKyKhachRequest extends FormRequest
+class DangKyRequest extends FormRequest
 {
     
     public function authorize()
@@ -14,13 +14,14 @@ class DangKyKhachRequest extends FormRequest
 
     public function rules()
     {
-        $this->session()->flash('loiDangKyKhach', true);
+        $this->session()->flash('register', true);
         return [
             'name' => 'required|max:100|min:4',
             'email' => 'required|email|max:100|unique:users,email',
             'password' => 'required|max:30|min:6',
             'passwordAgain' => 'same:password',
-            'phone' => 'required|max:11|min:10'
+            'phone' => 'required|max:11|min:10',
+            'role' => 'required'
         ];
     }
 
@@ -40,7 +41,8 @@ class DangKyKhachRequest extends FormRequest
             'passwordAgain.same' => 'Mật khẩu xác nhận không chính xác.',
             'phone.required' => 'Số điện thoại không được để trống.',
             'phone.max' => 'Số điện thoại tối đa là 11 chữ số.',
-            'phone.min' => 'Số điện thoại tối thiểu là 10 chữ số.'
+            'phone.min' => 'Số điện thoại tối thiểu là 10 chữ số.',
+            'role.required' => 'Vui lòng chọn loại người dùng.',
         ];
     }
 }

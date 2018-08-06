@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Bill;
 use App\Tour;
+use App\User;
 use Auth;
+use App\Notifications\BillNotification;
 
 class BillController extends Controller
 {
@@ -62,6 +64,12 @@ class BillController extends Controller
             'time_start' => $request->thoigianbatdau
         ]);
         Bill::create($request->all());
+
+        $user = User::find($tour->users_id);
+        if (\Notification::send($user, new BillNotification(Bill::latest('id')->first()))) {
+            return back();
+        }
+
         return redirect()->back()->with('success_book_tour', 'Gửi đơn đặt tour thành công.');
     }
 
@@ -100,6 +108,7 @@ class BillController extends Controller
         if (!$bill) {
             return redirect()->back();
         }
+        $user = User::find($bill->users_id);
 
         if ($request->status == 4) {
             if (!(Auth::user()->id == $bill->tour->users_id && $bill->status == 3)) {
@@ -107,7 +116,7 @@ class BillController extends Controller
             }
             $bill->update(['status' => 4]);
             return redirect()->back()->with('confirm_finish','Xác nhận thành công.');
-        }else{
+        }else {
             if (!(Auth::user()->id == $bill->tour->users_id && $bill->status == 0)) {
                 return redirect()->back();
             }elseif ($request->status == 2) {
@@ -120,9 +129,15 @@ class BillController extends Controller
                     ]
                 );
                 $bill->update(['status' => 2, 'response' => $request->response]);
+                if (\Notification::send($user, new BillNotification($bill))) {
+                    return back();
+                }
                 return redirect()->back()->with('disagree_success','Từ chối thành công.');
             }elseif ($request->status == 1) {
                 $bill->update(['status' => 1]);
+                if (\Notification::send($user, new BillNotification($bill))) {
+                    return back();
+                }
                 return redirect()->back()->with('agree_success','Chấp nhận thành công.');
             }
         }

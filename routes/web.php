@@ -39,6 +39,7 @@ Route::get('timkiem', 'AjaxController@getTimKiem');
 Route::post('suadonhang', 'AjaxController@postSuaDonHang');
 Route::post('xoalotrinh', 'AjaxController@postXoaLoTrinh');
 Route::get('laydulieu', 'AjaxController@getLayDuLieu');
+Route::get('readed-notification', 'AjaxController@getReaded');
 
 
 //--------------------HDV------------------

@@ -369,7 +369,7 @@ $(document).ready(function() {
         }, 'json');
         $('#comment-content-' + id + ' p').html('<<<< Bình luận đã bị ẩn >>>>').css('color', 'red');
         $(this).remove();
-    })
+    });
 
     $('.comment-author .delete-comment').click(function(){
         var flag = confirm('Bạn chắc chắn xóa bình luận này chứ?');
@@ -380,7 +380,7 @@ $(document).ready(function() {
             }, 'json');
             $('#li-comment-' + id).remove();
         }    
-    })
+    });
 
     $('.children .delete-reply').click(function(){
         var flag = confirm('Bạn chắc chắn xóa trả lời này chứ?');
@@ -391,7 +391,13 @@ $(document).ready(function() {
             }, 'json');
             $('#reply' + id).remove();
         }    
-    })
+    });
+
+    $('.notification li').click(function(){
+        var id = $(this).attr('id').substring(13);
+        $.get('readed-notification', {id:id}, function(data){
+        }, 'json');
+    });
 
 });
 

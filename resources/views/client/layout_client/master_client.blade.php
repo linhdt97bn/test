@@ -25,6 +25,9 @@
             .glyphicon-remove {
                 cursor: pointer;
             }
+            #primary-menu ul li>a i {
+                font-size: 22px;
+            }
         </style>
 
         <script src="CK/ckeditor.js"></script>

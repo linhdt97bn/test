@@ -11,6 +11,7 @@ use App\Roadmap;
 use App\Place;
 use App\RoadmapPlace;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
@@ -100,5 +101,10 @@ class AjaxController extends Controller
     {
         Comment::where('parent_id', $request->id)->delete();
         Comment::find($request->id)->delete();
+    }
+
+    public function getReaded(Request $request)
+    {
+        DB::table('notifications')->where('id', $request->id)->update(['read_at' => date('Y-m-d h:i:s')]);
     }
 }

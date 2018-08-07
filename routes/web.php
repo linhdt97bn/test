@@ -11,6 +11,8 @@
 |
 */
 
+//Route::get('change-language/{language}', 'PageController@changeLanguage')->name('user.change-language');
+
 Route::get('/', ['as' => 'trang-chu', 'uses' => 'PageController@getTrangChu']);
 
 Route::post('dang-ky', ['as' => 'dang-ky', 'uses' => 'PageController@postDangKy']);

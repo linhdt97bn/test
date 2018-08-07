@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <button type="button" class="btn btn-danger modal-dangky" data-dismiss="modal">X</button>
                 <div class="modal-header">  
-                    <div align="center">Đăng ký khách du lịch</div>
+                    <div align="center">{{ trans('i18n.button.register') }}</div>
                 </div>
 
                 <div class="modal-body">
@@ -18,23 +18,23 @@
                     <form action="{{ route('dang-ky') }}" method="POST" class="form-dangky">
                         <fieldset>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <label>Họ tên</label> 
+                            <label>{{ trans('i18n.label.name') }}</label> 
                             <span>{{ $errors->first('name') }}</span>
                             <input class="form-control" name="name" type="text" value="{{ old('name') }}">
 
-                            <label>Email</label> <span id="msgbox"></span>
+                            <label>{{ trans('i18n.label.email') }}</label> <span id="msgbox"></span>
                             <span>{{ $errors->first('email') }}</span>           
                             <input class="form-control" name="email" type="email" value="{{ old('email') }}" id="email">
 
-                            <label>Mật khẩu</label>
+                            <label>{{ trans('i18n.label.password') }}</label>
                             <span>{{ $errors->first('password') }}</span>   
                             <input class="form-control" name="password" type="password">
 
-                            <label>Nhập lại mật khẩu</label>
+                            <label>{{ trans('i18n.label.password_again') }}</label>
                             <span>{{ $errors->first('passwordAgain') }}</span>   
                             <input class="form-control" name="passwordAgain" type="password">
 
-                            <label>Số điện thoại</label>
+                            <label>{{ trans('i18n.label.phone') }}</label>
                             <span>
                                 {{ $errors->first('phone') }}
 
@@ -45,12 +45,12 @@
                             <input type="text" name="phone" class="form-control" value="{{ old('phone') }}">
 
                             <div class="role-1">
-                                <input type="radio" name="role" value="1"> <strong>Đăng ký làm Khách du lịch</strong>
+                                <input type="radio" name="role" value="1"> <strong>{{ trans('i18n.label.customer_register') }}</strong>
                             </div>
                             <div class="role-2">
-                                <input type="radio" name="role" value="2"> <strong>Đăng ký làm Hướng dẫn viên</strong>
+                                <input type="radio" name="role" value="2"> <strong>{{ trans('i18n.label.hdv_register') }}</strong>
                             </div>
-                            <div align="center"><button type="submit" class="btn btn-lg btn-success" id="btnKhach" >Đăng ký</button></div>
+                            <div align="center"><button type="submit" class="btn btn-lg btn-success" id="btnKhach" >{{ trans('i18n.button.register') }}</button></div>
                         </fieldset>
                     </form>
                 </div>

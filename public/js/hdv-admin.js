@@ -46,6 +46,15 @@ $(document).ready(function(){
         $('.add-province').show();
         $('.add-place').hide();
     });
+
+    if($('div').hasClass('bill-detail')){
+        var id = $('.bill-detail').attr('id').substring(12);
+        $('#chi-tiet-' +id).show();
+    }
+
+    $('.btnClose').click(function(){
+        $('.modal').hide();
+    })
 });
 
 function xoadiadiem(dem, id){

@@ -579,3 +579,23 @@ a {
     float: right;
     margin-right: 5px;
 }
+
+.entry-content ul {
+    margin-bottom: 10px;
+}
+.entry-content ul li {
+    margin-left: 50px;
+}
+.entry-content p {
+    margin-bottom: 10px;
+}
+.glyphicon-remove {
+    cursor: pointer;
+}
+#primary-menu ul li>a i {
+    font-size: 22px;
+}
+
+.modal-backdrop.show{
+    opacity: 0.3;
+}

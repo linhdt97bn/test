@@ -32,30 +32,7 @@
                     </li>
 
                     @if(Auth::check())
-                        <li class="current">
-                            <a><i class="glyphicon glyphicon-bell"></i> {{ Auth::user()->unreadNotifications->count() }}</a>
-                            <ul class="notification">   
-                                @if(Auth::user()->unreadNotifications->count())
-                                    @foreach(Auth::user()->unreadNotifications as $noti)
-                                        @if($noti->data['bill']['status'] == 0)
-                                            <li id="notification-{{ $noti->id }}">
-                                                <a href="{{ route('list-bill') }}">Khách hàng đặt tour</a>
-                                            </li>
-                                        @elseif($noti->data['bill']['status'] == 1)
-                                            <li id="notification-{{ $noti->id }}">
-                                                <a href="{{ route('chi-tiet', $noti->data['bill']['tour_id']) }}">1 đơn tour được đồng ý</a>
-                                            </li>
-                                        @elseif($noti->data['bill']['status'] == 2)
-                                            <li id="notification-{{ $noti->id }}">
-                                                <a href="{{ route('chi-tiet', $noti->data['bill']['tour_id']) }}">1 đơn tour bị từ chối</a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                @else 
-                                    <li><a>No notification</a></li>
-                                @endif
-                            </ul>
-                        </li>
+                        <notification v-bind:notifications="notifications"></notification>
                         <li class="current">
                             <a class="user">
                                 <img src="upload/{{Auth::user()->avatar}}" height="60" width="60"> 

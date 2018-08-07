@@ -8,6 +8,7 @@ use App\Tour;
 use App\User;
 use Auth;
 use App\Notifications\BillNotification;
+use App\Notification;
 
 class BillController extends Controller
 {
@@ -19,7 +20,7 @@ class BillController extends Controller
     public function index()
     {
         $lichsu = Bill::getLogBill();
-        return view('client.page_client.lichsudattour', compact('lichsu'));
+        return view('client.page_client.lichsudattour', compact('lichsu'));     
     }
 
     /**
@@ -63,10 +64,10 @@ class BillController extends Controller
             'status' => 0,
             'time_start' => $request->thoigianbatdau
         ]);
-        Bill::create($request->all());
+        $bill = Bill::create($request->all());
 
         $user = User::find($tour->users_id);
-        if (\Notification::send($user, new BillNotification(Bill::latest('id')->first()))) {
+        if (\Notification::send($user, new BillNotification($bill, 'hdv'))) {
             return back();
         }
 
@@ -152,5 +153,15 @@ class BillController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function notification()
+    {
+        return Auth::user()->unreadNotifications;
+    }
+
+    public function markAsRead(Request $request)
+    {
+        Notification::find($request->noti_id)->update(['read_at' => date('Y-m-d h:i:s')]);
     }
 }

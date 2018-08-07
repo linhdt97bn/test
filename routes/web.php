@@ -41,6 +41,10 @@ Route::post('xoalotrinh', 'AjaxController@postXoaLoTrinh');
 Route::get('laydulieu', 'AjaxController@getLayDuLieu');
 Route::get('readed-notification', 'AjaxController@getReaded');
 
+// notification by pusher
+Route::post('/notification', 'BillController@notification');
+Route::post('/markAsRead', 'BillController@markAsRead');
+
 
 //--------------------HDV------------------
 Route::group(['prefix' => 'hdv','middleware' => 'CheckHDV'], function(){

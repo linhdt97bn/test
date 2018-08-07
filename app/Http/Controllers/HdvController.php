@@ -18,9 +18,14 @@ class HdvController extends Controller
     	return view('hdv.page_hdv.trangchu');
     }
 
-    public function getListBill(){
+    public function getListBill(Request $request){
         $bill = Tour::getBillHDV();
-        return view('hdv.page_hdv.list_bill', compact('bill'));
+        if ($request->id) {
+            $id_bill = $request->id;
+            return view('hdv.page_hdv.list_bill', compact('bill', 'id_bill'));
+        } else {
+            return view('hdv.page_hdv.list_bill', compact('bill'));
+        }   
     }
 
     public function postXoaTour($id){

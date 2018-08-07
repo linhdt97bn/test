@@ -15,8 +15,32 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('notification', require('./components/NotificationComponent.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app-tour',
+    data: {
+    	notifications: '',
+    },
+    created(){
+    	var userId = $('meta[name="userId"]').attr('content');
+    	if(userId) {
+    		axios.post('/notification').then(response => {
+                timeAgo();
+    			this.notifications = response.data; 
+    		});
+
+    		Echo.private('App.User.' + userId).notification((notification) => {
+                timeAgo();
+    			this.notifications.push(notification);
+    		});
+    	}
+
+        function timeAgo(){
+            Vue.filter('myOwnTime', function(value){
+                var moment = require('moment');
+                return moment(value).fromNow();
+            });
+        }
+    }
 });

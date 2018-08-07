@@ -16,6 +16,9 @@
             @elseif(Session::has('confirm_finish'))
                 <div class="alert alert-success text-center">{{Session::get('confirm_finish')}}</div>
             @endif
+            @if(isset($id_bill))
+                <div class="bill-detail" id="bill-detail-{{ $id_bill }}"></div>
+            @endif
             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                 <thead>
                     <tr align="center">
@@ -143,7 +146,7 @@
                                                         <td>{{ $dsb->response }}</td>
                                                     </tr>
                                                 </table>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn btn-danger btnClose" data-dismiss="modal">Đóng</button>
                                             </div>
                                         </div>
                                     </div>

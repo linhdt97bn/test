@@ -27,11 +27,9 @@
                                         {{ $cttour->tour_name }}
                                         @if(Auth::check())
                                             @if($cttour->users_id == Auth::user()->id)
-                                                <input type="hidden" name="_token" id="tokenRoadmap" value="{{csrf_token()}}">
-                                                <input type="hidden" name="tour_id" id="tour_id" value="{{$cttour->id}}">
-                                                <button class="add-roadmap btn btn-success">
-                                                    Thêm lộ trình cho tour
-                                                </button>  
+                                                <input type="hidden" name="_token" id="tokenRoadmap" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="tour_id" id="tour_id" value="{{ $cttour->id }}">
+                                                <button class="add-roadmap btn btn-success">{{ trans('i18n.label.add_roadmap') }}</button>  
                                             @endif
                                         @endif
                                     </h1>   
@@ -39,13 +37,13 @@
                                 <div id="add-roadmap"></div>  
 
                                 <ul class="entry-meta clearfix">
-                                    <li><a><i class="icon-calendar3"></i> {{ date('d M Y', strtotime($cttour->created_at)) }}</a></li>
-                                    <li><a><i class="icon-user"></i> {{ $cttour->users->email }}</a></li>
-                                    <li><a><i class="icon-comments"></i> {{ $cttour->comment->count() }} Comments</a></li>		
+                                    <li><a><i class="icon-calendar3"></i>{{ date('d M Y', strtotime($cttour->created_at)) }}</a></li>
+                                    <li><a><i class="icon-user"></i>{{ $cttour->users->email }}</a></li>
+                                    <li><a><i class="icon-comments"></i>{{ trans('i18n.label.total_comment', ['total_comment' => $cttour->comment->count()]) }}</a></li>		
                                 </ul>
                                 <ul class="entry-meta clearfix">
-                                    <li><a>Số ngày tham quan: {{ $cttour->roadmap->count() }} ngày</a></li>
-                                    <li><a>Số khách tối đa: {{ $cttour->customer_max }} người</a></li>
+                                    <li><a>{{ trans('i18n.label.total_day', ['total_day' => $cttour->roadmap->count()]) }}</a></li>
+                                    <li><a>{{ trans('i18n.label.customer_max', ['customer_max' => $cttour->customer_max]) }}</a></li>
                                 </ul>
 
                                 <div class="entry-image">
@@ -53,25 +51,29 @@
                                 </div>
 
                                 <div class="entry-content notopmargin">
-                                    <?php $i = 1; ?>
+                                    @php
+                                        $i = 1;
+                                    @endphp
                                     @foreach($cttour->roadmap as $roadmap)
                                         <div id="roadmap-{{ $roadmap->id }}">
                                             <div class="timeline-title" style="float: left">
-                                                Ngày {{$i++}}: 
-                                                <?php $string = ''; ?>
+                                                {{ trans('i18n.label.day', ['day' => $i++]) }}
+                                                @php
+                                                    $string = '';
+                                                @endphp
                                                 @foreach($roadmap->roadmap_place as $roadmap_place)
-                                                    <?php 
+                                                    @php
                                                         $string .= $roadmap_place->place->place_name.', '; 
-                                                    ?>          
+                                                    @endphp        
                                                 @endforeach
                                                 {{ rtrim($string, ', ') }}
                                             </div>
                                             @if(Auth::check())
                                                 @if($cttour->users_id == Auth::user()->id)
-                                                    <button id="edit-roadmap-{{$roadmap->id}}" class="edit-roadmap btn btn-success">
+                                                    <button id="edit-roadmap-{{ $roadmap->id }}" class="edit-roadmap btn btn-success">
                                                         <i class="glyphicon glyphicon-pencil"></i>
                                                     </button>
-                                                    <button id="delete-roadmap-{{$roadmap->id}}" class="delete-roadmap btn btn-danger">
+                                                    <button id="delete-roadmap-{{ $roadmap->id }}" class="delete-roadmap btn btn-danger">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                     </button>
                                                 @endif
@@ -87,47 +89,54 @@
 
                             <div class="post-navigation clearfix text-center">
                                 @if(Auth::check())
-                                    <?php $co = true ?>
+                                    @php 
+                                        $flag = true;
+                                    @endphp
                                     @foreach($cttour->bill as $bll)
                                         @if(($bll->tinhtrangdon == 0 || $bll->tinhtrangdon == 1 || $bll->tinhtrangdon == 3) && $bll->users_id == Auth::user()->id)
-                                            <?php $co = false ?>
+                                            @php
+                                                $flag = false;
+                                            @endphp
                                             @break;
                                         @endif
                                     @endforeach
 
-                                    @if($co == false)
-                                        <a><em>Bạn đã đặt tour này</em></a>
+                                    @if($flag == false)
+                                        <a><em>{{ trans('i18n.label.booked_tour') }}</em></a>
                                     @else
                                         @if(Auth::user()->role == 1)
-                                            <em>{{number_format($cttour->price)}} VNĐ</em><a data-toggle="modal" data-target="#DatTour"><i class="icon-shopping-cart"></i></a>
+                                            <em>{{ trans('i18n.label.tour_price_vnd', ['price' => number_format($cttour->price)]) }}</em><a data-toggle="modal" data-target="#DatTour"><i class="icon-shopping-cart"></i></a>
                                         @endif
                                     @endif
                                 @else
-                                    <em>{{number_format($cttour->price)}} VNĐ</em><a data-toggle="modal" data-target="#DangNhap"><i class="icon-shopping-cart"></i></a>
+                                    <em>{{ trans('i18n.label.tour_price_vnd', ['price' => number_format($cttour->price)]) }}</em><a data-toggle="modal" data-target="#DangNhap"><i class="icon-shopping-cart"></i></a>
                                 @endif
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">			
                                     <ul class="nav nav-tabs">	
-                                        <li><a href="#danhgia" data-toggle="tab" id="dg">Đánh giá</a></li>	
-                                        <li><a href="#comments" data-toggle="tab" id="bl">Bình luận</a></li>
-                                        <li><a href="#thongtinhdv" data-toggle="tab" id="tthdv">Hướng dẫn viên</a></li>               
+                                        <li><a href="#danhgia" data-toggle="tab" id="dg">{{ trans('i18n.label.rate') }}</a></li>	
+                                        <li><a href="#comments" data-toggle="tab" id="bl">{{ trans('i18n.label.comment') }}</a></li>
+                                        <li><a href="#thongtinhdv" data-toggle="tab" id="tthdv">{{ trans('i18n.label.hdv') }}</a></li>               
                                     </ul>
                                 </div>
                             </div>
 
                             <div id="thongtinhdv" class="text-center">
-                                <img src="upload/{{$cttour->users->avatar}}" height="200" width="200">
+                                <img src="upload/{{ $cttour->users->avatar }}" height="200" width="200">
                                 <div class="clear"></div>
-                                <span>Họ tên: {{ $cttour->users->name }}</span>
+                                <span>{{ trans('i18n.label.hdv_name', ['name' => $cttour->users->name]) }}</span>
                                 <span>Email: {{ $cttour->users->email }}</span>
                                 <span>Địa chỉ: {{ $cttour->users->address ? $cttour->users->address : "Chưa cập nhật" }}</span>
+                                <span>
+                                    {{ trans('i18n.label.address_hdv', ['address' => $cttour->users->address]) }}
+                                </span>
                                 <span>Số điện thoại: {{$cttour->users->phone}}</span>
                                 <span>
                                     Giới tính: {{ $cttour->users->gender ? "Nam" : ($cttour->users->gender === 0 ? "Nữ" : "Chưa cập nhật") }}
                                 </span>
-                                <span><a href="{{route('tour_hdv', $cttour->users->id)}}">Xem các tour khác của hướng dẫn viên</a></span>
+                                <span><a href="{{route('tour_hdv', $cttour->users->id)}}">{{ trans('i18n.label.view_tour_hdv') }}</a></span>
                             </div>
                             @include('client.page_client.binhluan')
                             @include('client.page_client.danhgia')

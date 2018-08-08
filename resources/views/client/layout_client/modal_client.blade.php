@@ -2,7 +2,7 @@
     <div class="modal" id="DangKy">
         <div class="modal-dialog">
             <div class="modal-content">
-                <button type="button" class="btn btn-danger modal-dangky" data-dismiss="modal">X</button>
+                <button type="button" class="btn btn-danger modal-dangky" data-dismiss="modal">{{ trans('i18n.button.x') }}</button>
                 <div class="modal-header">  
                     <div align="center">{{ trans('i18n.button.register') }}</div>
                 </div>
@@ -61,9 +61,9 @@
     <div class="modal" id="DangNhap">
         <div class="modal-dialog">
             <div class="modal-content">
-                <button type="button" class="btn btn-danger modal-dangnhap" data-dismiss="modal">X</button>
+                <button type="button" class="btn btn-danger modal-dangnhap" data-dismiss="modal">{{ trans('i18n.button.x') }}</button>
                 <div class="modal-header">  
-                    <div align="center">Đăng nhập</div>
+                    <div align="center">{{ trans('i18n.button.login') }}</div>
                 </div>
                 <div class="modal-body">
                     @if(Session::has('error_login'))
@@ -75,17 +75,17 @@
                         <fieldset>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                            <label>Email</label>
+                            <label>{{ trans('i18n.label.email') }}</label>
                             <span>{{ $errors->first('email') }}</span>
                             <input class="form-control" name="email" type="email" value="{{ old('email') }}">
 
-                            <label>Mật khẩu</label>
+                            <label>{{ trans('i18n.label.password') }}</label>
                             <span>{{ $errors->first('password') }}</span>
                             <input class="form-control" name="password" type="password">
 
                             <div align="center">
-                                <input type="checkbox" name="ghinho" id="chkGhinho"> <label id="ghinho">Ghi nhớ đăng nhập</label>
-                                <button type="submit" class="btn btn-lg btn-success btn-block" id="btnDangNhap">Đăng nhập</button>
+                                <input type="checkbox" name="ghinho" id="chkGhinho"> <label id="ghinho">{{ trans('i18n.label.remember') }}</label>
+                                <button type="submit" class="btn btn-lg btn-success btn-block" id="btnDangNhap">{{ trans('i18n.button.login') }}</button>
                             </div>
                         </fieldset>
                     </form>
@@ -98,9 +98,9 @@
     <div class="modal" id="DatTour">
         <div class="modal-dialog">
             <div class="modal-content">
-                <button type="button" class="btn btn-danger modal-dattour" data-dismiss="modal">X</button>
+                <button type="button" class="btn btn-danger modal-dattour" data-dismiss="modal">{{ trans('i18n.button.x') }}</button>
                 <div class="modal-header">  
-                    <div align="center">Đặt Tour</div>
+                    <div align="center">{{ trans('i18n.button.book_tour') }}</div>
                 </div>
                 @if(Session::has('success_book_tour'))
                     <div class="alert alert-success text-center book-tour">{{ Session::get('success_book_tour') }}</div>
@@ -115,18 +115,18 @@
                         <fieldset>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                            <label>Tên tour</label>
+                            <label>{{ trans('i18n.label.tour_name') }}</label>
                             <input type="text" class="form-control" readonly="" name="tentour" value="{{ $cttour->tour_name }}">
                                 
-                            <label>Giá tour</label>
+                            <label>{{ trans('i18n.label.tour_price') }}</label>
                             <input type="text" class="form-control giatour" readonly="" name="giatour" value="{{ $cttour->price }}">
 
-                            <label>Tổng tiền:</label>
-                            <label class="tong-tien"> 0 </label>
-                            <strong> VNĐ </strong>
+                            <label>{{ trans('i18n.label.total_price') }}</label>
+                            <label class="tong-tien">{{ trans('i18n.label.zero') }}</label>
+                            <strong>{{ trans('i18n.label.vnd') }}</strong>
                             <div class="clear"></div>
 
-                            <label>Thời gian bắt đầu</label>
+                            <label>{{ trans('i18n.label.time_start') }}</label>
                             <span>
                                 {{ $errors->first('thoigianbatdau') }}
                                 @if(session('error_time'))
@@ -135,7 +135,7 @@
                             </span>
                             <input type="date" class="form-control" name="thoigianbatdau" value="{{ old('thoigianbatdau') }}">
 
-                            <label>Số người lớn đi tour</label>
+                            <label>{{ trans('i18n.label.adult_number') }}</label>
                             <span>
                                 {{ $errors->first('adult_number') }}
                                 @if(session('error_customer_max'))
@@ -144,16 +144,16 @@
                             </span>  
                             <input type="number" name="adult_number" class="form-control adult-number" value="{{ old('adult_number') }}">
 
-                            <label>Số trẻ nhỏ đi tour ( < 15 tuổi )</label>
+                            <label>{{ trans('i18n.label.child_number') }}</label>
                             <span>{{ $errors->first('child_number') }}</span> 
                             <input type="number" name="child_number" class="form-control child-number" value="0">
 
                             <input type="checkbox" name="check_request" id="check_request">
-                            <label>Yêu cầu khác</label>
+                            <label>{{ trans('i18n.label.other_request') }}</label>
                             <span>{{ $errors->first('request') }}</span> 
                             <textarea name="request" class="form-control request" rows="5"></textarea>
 
-                            <div align="center"><button type="submit" class="btn btn-lg btn-success" id="btnDatTour">Đặt tour</button></div>
+                            <div align="center"><button type="submit" class="btn btn-lg btn-success" id="btnDatTour">{{ trans('i18n.button.book_tour') }}</button></div>
                         </fieldset>
                     </form>
                 </div>
@@ -165,9 +165,9 @@
     <div class="modal" id="SuaThongTin">
         <div class="modal-dialog">
             <div class="modal-content">
-                <button type="button" class="btn btn-danger modal-suathongtin" data-dismiss="modal">X</button>
+                <button type="button" class="btn btn-danger modal-suathongtin" data-dismiss="modal">{{ trans('i18n.button.x') }}</button>
                 <div class="modal-header">  
-                    <div align="center">Sửa thông tin cá nhân</div>
+                    <div align="center">{{ trans('i18n.button.edit_profile') }}</div>
                 </div>
 
                 <div class="modal-body">
@@ -180,27 +180,27 @@
                         <fieldset>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                            <label>Họ tên</label>
+                            <label>{{ trans('i18n.label.name') }}</label>
                             <span>{{ $errors->first('name') }}</span>
                             <input type="text" class="form-control" name="name" value="{{ Auth::user()->name }}">
 
-                            <input type="checkbox" name="checkpassword" id="changePassword"><label> Thay đổi mật khẩu</label><br>
+                            <input type="checkbox" name="checkpassword" id="changePassword"><label>{{ trans('i18n.label.change_password') }}</label><br>
 
-                            <label>Mật khẩu mới</label>
+                            <label>{{ trans('i18n.label.new_password') }}</label>
                             <span>{{ $errors->first('password') }}</span>
                             <input type="password" class="form-control password" name="password" disabled="">
 
-                            <label>Nhập lại mật khẩu</label>
+                            <label>{{ trans('i18n.label.password_again') }}</label>
                             <span>{{ $errors->first('passwordAgain') }}</span>
                             <input type="password" class="form-control password" name="passwordAgain" disabled="">
 
-                            <label>Ảnh đại diện</label>
+                            <label>{{ trans('i18n.label.avatar') }}</label>
                             @if(Session::has('error_avatar')) 
                                 <span>{{ Session::get('error_avatar') }}</span>
                             @endif
                             <input type="file" class="form-control" name="anhdaidien" value="{{ Auth::user()->anhdaidien }}">
 
-                            <label>Số điện thoại</label>
+                            <label>{{ trans('i18n.label.phone') }}</label>
                             <span>
                                 {{ $errors->first('phone') }}
                                 @if(Session::has('error_edit_phone')) 
@@ -209,29 +209,29 @@
                             </span>
                             <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}">
 
-                            <label>Địa chỉ</label>
+                            <label>{{ trans('i18n.label.address') }}</label>
                             <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}">
 
-                            <label>Năm sinh</label>
+                            <label>{{ trans('i18n.label.birthday') }}</label>
                             @if(Session::has('error_birthday')) 
                                 <span>{{ Session::get('error_birthday') }}</span>
                             @endif
                             <input type="text" class="form-control" name="birthday" value="{{ Auth::user()->birthday }}">
 
-                            <label>Giới tính:</label>                                
+                            <label>{{ trans('i18n.label.gender') }}</label>                                
                             @if(Auth::user()->gender == 1)
-                            <input type="radio" name="gender" value="1" checked=""> <span>Nam</span>
-                            <input type="radio" name="gender" value="0"> <span>Nữ</span>
+                            <input type="radio" name="gender" value="1" checked=""> <span>{{ trans('i18n.label.male') }}</span>
+                            <input type="radio" name="gender" value="0"> <span>{{ trans('i18n.label.female') }}</span>
                             @elseif(Auth::user()->gender === 0)
-                            <input type="radio" name="gender" value="1"> <span>Nam</span>
-                            <input type="radio" name="gender" value="0" checked=""> <span>Nữ</span>
+                            <input type="radio" name="gender" value="1"> <span>{{ trans('i18n.label.male') }}</span>
+                            <input type="radio" name="gender" value="0" checked=""> <span>{{ trans('i18n.label.female') }}</span>
                             @else
-                            <input type="radio" name="gender" value="1"> <span>Nam</span>
-                            <input type="radio" name="gender" value="0"> <span>Nữ</span>
+                            <input type="radio" name="gender" value="1"> <span>{{ trans('i18n.label.male') }}</span>
+                            <input type="radio" name="gender" value="0"> <span>{{ trans('i18n.label.female') }}</span>
                             @endif
 
                             <div align="center">
-                                <button type="submit" class="btn btn-success" id="btnSuaThongTin">Sửa</button>
+                                <button type="submit" class="btn btn-success" id="btnSuaThongTin">{{ trans('i18n.button.edit') }}</button>
                             </div>
                         </fieldset>
                     </form>
@@ -244,9 +244,9 @@
 <div class="modal" id="QuyDinh">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <button type="button" class="btn btn-danger modal-suathongtin" data-dismiss="modal">X</button>
+            <button type="button" class="btn btn-danger modal-suathongtin" data-dismiss="modal">{{ trans('i18n.button.x') }}</button>
             <div class="modal-header">  
-                <div align="center">Quy định</div>
+                <div align="center">{{ trans('i18n.button.rule') }}</div>
             </div>
 
             <div class="modal-body">

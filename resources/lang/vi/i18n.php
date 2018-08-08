@@ -34,6 +34,9 @@ return [
     	'page_manage' => 'Trang quản lý',
     	'tour_manage' => 'Quản lý tour',
     	'bill_log' => 'Lịch sử đặt tour',
+        'book_tour' => 'Đặt Tour',
+        'x' => 'X',
+
 
     ],
 
@@ -46,7 +49,51 @@ return [
     	'phone' => 'Số điện thoại',
     	'hdv_register' => 'Đăng ký hướng dẫn viên',
     	'customer_register' => 'Đăng ký khách du lịch',
+        'remember' => 'Ghi nhớ đăng nhập',
+        'tour_name' => 'Tên tour',
+        'tour_price' => 'Giá tour',
+        'total_price' => 'Tổng tiền: ',
+        'child_number' => 'Số trẻ nhỏ đi tour ( < 15 tuổi )',
+        'adult_number' => 'Số người lớn đi tour',
+        'time_start' => 'Thời gian bắt đầu',
+        'other_request' => 'Yêu cầu khác',
+        'zero' => '0',
+        'vnd' => 'VNĐ',
+        'change_password' => 'Thay đổi mật khẩu',
+        'new_password' => 'Mật khẩu mới',
+        'gender' => 'Giới tính',
+        'male' => 'Nam',
+        'female' => 'Nữ',
+        'avatar' => 'Ảnh đại diện',
+        'birthday' => 'Ngày sinh',
+        'hide_comment' => 'Ẩn bình luận',
+        'delete_comment' => 'Xóa bình luận',
+        'comment_hidden' => '<<<< Bình luận đã bị ẩn >>>>',
+        'delete_reply' => 'Xóa trả lời',
+        'reply' => 'Trả lời',
+        'leave' => 'Để lại ',
+        'comment' => 'Bình luận',
+        'submit_comment' => 'Gửi bình luận',
+        'add_roadmap' => 'Thêm lộ trình',
+        'total_comment' => ':total_comment Bình luận',
+        'total_day' => 'Số ngày tham quan: :total_day ngày',
+        'customer_max' => 'Số khách tối đa: :customer_max người',
+        'day' => 'Ngày :day:',
+        'booked_tour' => 'Bạn đã đặt tour này',
+        'tour_price_vnd' => ':price VNĐ',
+        'rate' => 'Đánh giá',
+        'comment' => 'Bình luận',
+        'hdv' => 'Hướng dẫn viên',
+        'hdv_name' => 'Họ tên: :name',
+        'view_tour_hdv' => 'Xem các tour khác của hướng dẫn viên',
+        'hdv_address' => 'Địa chỉ: :address',
+
+        
+
+
     ],
+
+    'language' =>'Ngôn ngữ:',
 
 
 ];

@@ -4,26 +4,26 @@
             @foreach($cttour->comment as $comment)
                 @if($comment->parent_id == 0)
                     <li class="comment even thread-even depth-1" id="li-comment-{{ $comment->id }}">
-                        <div id="comment-{{$comment->id}}" class="comment-wrap clearfix">
+                        <div id="comment-{{ $comment->id }}" class="comment-wrap clearfix">
                             <div class="comment-meta">
                                 <div class="comment-author vcard">
                                     <span class="comment-avatar clearfix">
-                                        <img alt='' src='upload/{{$comment->users->avatar}}' class='avatar avatar-60 photo avatar-default' height='60' width='60' />
+                                        <img alt='' src='upload/{{ $comment->users->avatar}}' class='avatar avatar-60 photo avatar-default' height='60' width='60' />
                                     </span>
                                 </div>
                             </div>
                             <div class="comment-content clearfix" id="comment-content-{{ $comment->id }}">
-                                <div class="comment-author" ><a>{{$comment->users->name}}</a>
+                                <div class="comment-author" ><a>{{ $comment->users->name }}</a>
                                     <span><a>{{ date('M d,Y \a\t h:i a', strtotime($comment->created_at)) }}</a></span>
                                     @if(Auth::user()->role == 3)
                                         @if($comment->status == 1)
-                                            <button class="btn btn-warning hidden-comment" id="hide-comment-{{ $comment->id }}">Ẩn bình luận</button>
+                                            <button class="btn btn-warning hidden-comment" id="hide-comment-{{ $comment->id }}">{{ trans('i18n.label.hide_comment') }}</button>
                                         @endif
-                                        <button class="btn btn-danger delete-comment" id="delete-comment-{{ $comment->id }}">Xóa bình luận</button>
+                                        <button class="btn btn-danger delete-comment" id="delete-comment-{{ $comment->id }}">{{ trans('i18n.label.delete_comment') }}</button>
                                     @endif
                                 </div>
                                 @if($comment->status == 0)
-                                    <p class="hide-comment"> <<<< Bình luận đã bị ẩn >>>> </p>
+                                    <p class="hide-comment">{{ trans('i18n.label.comment_hidden') }}</p>
                                 @else
                                     <p>{!! $comment->content !!}</p>
                                 @endif
@@ -38,15 +38,17 @@
                                             <div class="comment-meta">
                                                 <div class="comment-author vcard">
                                                     <span class="comment-avatar clearfix">
-                                                        <img alt='' src='upload/{{$reply->users->avatar}}' class='avatar avatar-40 photo' height='40' width='40' />
+                                                        <img alt='' src='upload/{{ $reply->users->avatar }}' class='avatar avatar-40 photo' height='40' width='40' />
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="comment-content clearfix">
                                                 <div class="comment-author">
-                                                    <a>{{$reply->users->name}}</a>
+                                                    <a>{{ $reply->users->name }}</a>
                                                     <span><a>{{ date('M d,Y \a\t h:i a', strtotime($reply->created_at)) }}</a></span>
-                                                    <button class="btn btn-danger delete-reply" id="delete-reply-{{ $reply->id }}">Xóa trả lời</button>
+                                                    @if(Auth::user()->role == 3)
+                                                        <button class="btn btn-danger delete-reply" id="delete-reply-{{ $reply->id }}">{{ trans('i18n.label.delete_reply') }}</button>
+                                                    @endif
                                                 </div>
                                                 <p>{!! $reply->content !!}</p>
                                             </div>
@@ -56,15 +58,15 @@
                             @endforeach
                         </ul>
                         @if(Auth::check())
-                            <a class="reply-comment" id="reply-comment-{{$comment->id}}">Reply<i class="icon-reply"></i></a>
-                            <div class="col_full formReply" id="formReply-{{$comment->id}}">
+                            <a class="reply-comment" id="reply-comment-{{ $comment->id }}">{{ trans('i18n.label.reply') }}<i class="icon-reply"></i></a>
+                            <div class="col_full formReply" id="formReply-{{ $comment->id }}">
                                 <textarea name="reply" id="noidungReply" cols="58" rows="4" tabindex="4" class="sm-form-control"></textarea>
-                                <input type="hidden" name="_token" id="tokenReply" value="{{csrf_token()}}">
-                                <input type="hidden" name="tour_id" id="tourReply" value="{{$cttour->id}}">
-                                <button id="btnReply-{{$comment->id}}" tabindex="5" class="button button-3d btnReply">Reply</button>
+                                <input type="hidden" name="_token" id="tokenReply" value="{{ csrf_token() }}">
+                                <input type="hidden" name="tour_id" id="tourReply" value="{{ $cttour->id }}">
+                                <button id="btnReply-{{ $comment->id }}" tabindex="5" class="button button-3d btnReply">{{ trans('i18n.label.reply') }}</button>
                             </div>
                         @else
-                            <a class="reply-comment" data-toggle="modal" data-target="#DangNhap">Reply<i class="icon-reply"></i></a>
+                            <a class="reply-comment" data-toggle="modal" data-target="#DangNhap">{{ trans('i18n.label.reply') }}<i class="icon-reply"></i></a>
                         @endif
                     </li>
                 @endif
@@ -73,22 +75,22 @@
     </ol>
 	
     <div id="respond" class="clearfix">
-        <h3>Leave a <span>Comment</span></h3>
+        <h3>{{ trans('i18n.label.leave') }}<span>{{ trans('i18n.label.comment') }}</span></h3>
         @if(Auth::check())
             <div class="col_full">
                 <textarea name="comment" id="noidungComment" cols="58" rows="5" tabindex="4" class="sm-form-control"></textarea>
-                <input type="hidden" name="_token" id="tokenComment" value="{{csrf_token()}}">
-                <input type="hidden" name="tour_id" id="tourComment" value="{{$cttour->id}}">
+                <input type="hidden" name="_token" id="tokenComment" value="{{ csrf_token()}} ">
+                <input type="hidden" name="tour_id" id="tourComment" value="{{ $cttour->id }}">
             </div>
             <div class="col_full nobottommargin">
-                <button id="btnComment" tabindex="5" class="button button-3d nomargin">Submit Comment</button>
+                <button id="btnComment" tabindex="5" class="button button-3d nomargin">{{ trans('i18n.label.submit_comment') }}</button>
             </div>
         @else
             <div class="col_full">
                 <textarea name="comment" cols="58" rows="5" tabindex="4" class="sm-form-control"></textarea>
             </div>
             <div class="col_full nobottommargin">
-                <a data-toggle="modal" data-target="#DangNhap"><button tabindex="5" value="Submit" class="button button-3d nomargin">Submit Comment</button></a>
+                <a data-toggle="modal" data-target="#DangNhap"><button tabindex="5" value="Submit" class="button button-3d nomargin">{{ trans('i18n.label.submit_comment') }}</button></a>
             </div>
         @endif
     </div>

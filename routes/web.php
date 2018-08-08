@@ -11,7 +11,9 @@
 |
 */
 
-//Route::get('change-language/{language}', 'PageController@changeLanguage')->name('user.change-language');
+Route::group(['middleware' => 'locale'], function() {
+    Route::get('change-language/{language}', ['as' => 'language', 'uses' => 'PageController@changeLanguage']);
+});
 
 Route::get('/', ['as' => 'trang-chu', 'uses' => 'PageController@getTrangChu']);
 

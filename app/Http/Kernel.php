@@ -19,6 +19,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \App\Http\Middleware\LocaleMiddleware::class,
     ];
 
     /**
@@ -62,5 +64,6 @@ class Kernel extends HttpKernel
         'CheckKhach'=> \App\Http\Middleware\CheckKhachMiddleware::class,
         'CheckHDV'=> \App\Http\Middleware\CheckHDVMiddleware::class,
         'CheckAdmin'=> \App\Http\Middleware\CheckAdminMiddleware::class,
+        'locale' => \App\Http\Middleware\LocaleMiddleware::class,
     ];
 }

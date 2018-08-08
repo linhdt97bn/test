@@ -34,6 +34,8 @@ return [
     	'page_manage' => 'Page Manage',
     	'tour_manage' => 'Tour Manage',
     	'bill_log' => 'Bill',
+        'book_tour' => 'Book Tour',
+        'x' => 'X',
 
     ],
 
@@ -46,7 +48,27 @@ return [
     	'phone' => 'phone',
     	'hdv_register' => 'Register HDV',
     	'customer_register' => 'Register Customer',
+        'remember' => 'Remember Me',
+        'tour_name' => 'Tour Name',
+        'tour_price' => 'Tour Price',
+        'total_price' => 'Total Price: ',
+        'child_number' => 'Child Number (age < 15)',
+        'adult_number' => 'Adult Number',
+        'time_start' => 'Time Start',
+        'other_request' => 'Other Request',
+        'zero' => '0',
+        'vnd' => 'VND',
+        'change_password' => 'Change Password',
+        'new_password' => 'New Password',
+        'gender' => 'Gender',
+        'male' => 'Male',
+        'female' => 'Female',
+        'avatar' => 'Avatar',
+        'birthday' => 'Birthday',
+
+
     ],
 
 
+    'language' =>'Language:',
 ];

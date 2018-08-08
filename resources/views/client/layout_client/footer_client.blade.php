@@ -4,6 +4,11 @@
             <div class="col_half">
                 Copyrights &copy; 2014 All Rights Reserved by team Project1.<br>
                 <div class="copyright-links"><a>Terms of Use</a> / <a>Privacy Policy</a></div>
+                <div>
+                    <span>{{ trans('i18n.language') }}</span>
+                    <a href="{!! route('language', ['en']) !!}"> English</a>
+                    <a href="{!! route('language', ['vi']) !!}"> Vietnam</a>
+                </div>   
             </div>
             <div class="col_half col_last tright">
                 <div class="fright clearfix">

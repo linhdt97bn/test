@@ -15,7 +15,7 @@ use App\Bill;
 use App\Rate;
 use App\Roadmap;
 use App\RoadmapPlace;
-
+use Illuminate\Support\Facades\Session;
 class PageController extends Controller
 {
     
@@ -156,5 +156,11 @@ class PageController extends Controller
 
         $user->update($request->all());
         return redirect()->back()->with('success_edit_user', 'Sửa thông tin thành công');
+    }
+
+    public function changeLanguage($language)
+    {
+        \Session::put('website_language', $language);
+        return redirect()->back();
     }
 }

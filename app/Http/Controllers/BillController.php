@@ -130,13 +130,13 @@ class BillController extends Controller
                     ]
                 );
                 $bill->update(['status' => 2, 'response' => $request->response]);
-                if (\Notification::send($user, new BillNotification($bill))) {
+                if (\Notification::send($user, new BillNotification($bill, ''))) {
                     return back();
                 }
                 return redirect()->back()->with('disagree_success','Từ chối thành công.');
             }elseif ($request->status == 1) {
                 $bill->update(['status' => 1]);
-                if (\Notification::send($user, new BillNotification($bill))) {
+                if (\Notification::send($user, new BillNotification($bill, ''))) {
                     return back();
                 }
                 return redirect()->back()->with('agree_success','Chấp nhận thành công.');

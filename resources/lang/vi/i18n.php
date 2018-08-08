@@ -17,6 +17,9 @@ return [
         'phone_max' => 'Số điện thoại tối đa là 11 chữ số.',
         'phone_min' => 'Số điện thoại tối thiểu là 10 chữ số.',
         'role_required' => 'Vui lòng chọn loại người dùng.',
+        'place_requỉred' => 'Địa điểm không được để trống.',
+        'roadmap_required' => 'Lộ trình ngày đi không được để trống.',
+
     ],
 
     'button' => [
@@ -36,6 +39,11 @@ return [
     	'bill_log' => 'Lịch sử đặt tour',
         'book_tour' => 'Đặt Tour',
         'x' => 'X',
+        'hide' => 'Ẩn',
+        'show' => 'Hiện',
+        'add_tour' => 'Thêm tour',
+        'edit_tour' => 'Sửa tour',
+
 
 
     ],
@@ -77,7 +85,9 @@ return [
         'add_roadmap' => 'Thêm lộ trình',
         'total_comment' => ':total_comment Bình luận',
         'total_day' => 'Số ngày tham quan: :total_day ngày',
+        'total_day_name' => 'Số ngày tham quan',
         'customer_max' => 'Số khách tối đa: :customer_max người',
+        'customer_max_name' => 'Số khách tối đa',
         'day' => 'Ngày :day:',
         'booked_tour' => 'Bạn đã đặt tour này',
         'tour_price_vnd' => ':price VNĐ',
@@ -87,8 +97,32 @@ return [
         'hdv_name' => 'Họ tên: :name',
         'view_tour_hdv' => 'Xem các tour khác của hướng dẫn viên',
         'hdv_address' => 'Địa chỉ: :address',
+        'list' => 'Danh sách',
+        'my_tour' => 'Tour của tôi',
+        'image' => 'Hình ảnh',
+        'status' => 'Trạng thái',
+        'roadmap' => 'Lộ trình',
+        'day' => 'Ngày :day:',
+        'description' => 'Mô tả',
+        
+
 
         
+
+    ],
+
+    'session' => [
+        'error_phone' => 'Kiểm tra lại số điện thoại!',
+        'error_login' => 'Sai tài khoản hoặc mật khẩu!',
+        'error_rate' => 'Lỗi đánh giá!',
+        'success_rate' => 'Cảm ơn bạn đã đánh giá tour!',
+        'error_image' => 'Định dạng ảnh phải là jpg, png, jpeg!',
+        'error_birthday' => 'Vui lòng nhập đúng năm sinh!',
+        'success_edit_user' => 'Sửa thông tin thành công.',
+        'success_edit_tour' => 'Sửa tour thành công.',
+        'success_add_tour' => 'Thêm tour thành công.',
+        'success_hide_tour' => 'Tour đã được ẩn.',
+        'success_show_tour' => 'Tour đã được hiện.'
 
 
     ],

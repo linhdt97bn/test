@@ -13,12 +13,12 @@ use Auth;
 
 class HdvController extends Controller
 {
-    public function trangchu()
+    public function home()
     {
     	return view('hdv.page_hdv.trangchu');
     }
 
-    public function getListBill(Request $request){
+    public function listBill(Request $request){
         $bill = Tour::getBillHDV();
         if ($request->id) {
             $id_bill = $request->id;
@@ -28,12 +28,7 @@ class HdvController extends Controller
         }   
     }
 
-    public function postXoaTour($id){
-        Bill::find($id)->delete();
-        return redirect()->back()->with('thongbao','Xóa thành công');
-    }
-
-    public function postThemLoTrinh(Request $request)
+    public function addRoadmap(Request $request)
     {
         $request->session()->flash('add_roadmap', true);
         $this->validate($request,
@@ -42,12 +37,12 @@ class HdvController extends Controller
                 'ngay' => 'required'
             ],
             [
-                'place.required' => 'Địa điểm không được để trống.',
-                'ngay.required' => 'Lộ trình ngày đi không được để trống.'
+                'place.required' => trans('i18n.validate.place_required'),
+                'ngay.required' => trans('i18n.validate.roadmap_requỉred')
             ]
         );
         $request->merge([ 
-            'description' => $request->ngay ,
+            'description' => $request->ngay,
             'tour_id' => $request->idtour
         ]);
         $roadmap = Roadmap::create($request->only('description', 'tour_id'));
@@ -67,7 +62,7 @@ class HdvController extends Controller
         return redirect()->back(); 
     }
 
-    public function postSuaLoTrinh($id, Request $request)
+    public function editRoadmap($id, Request $request)
     {
         $request->session()->flash('edit_roadmap', true);
         $this->validate($request,
@@ -76,8 +71,8 @@ class HdvController extends Controller
                 'ngay' => 'required'
             ],
             [
-                'place.required' => 'Địa điểm không được để trống.',
-                'ngay.required' => 'Lộ trình ngày đi không được để trống.'
+                'place.required' => trans('i18n.validate.place_required'),
+                'ngay.required' => trans('i18n.validate.roadmap_requỉred')
             ]
         );
         $request->merge(['description' => $request->ngay]);
@@ -89,11 +84,11 @@ class HdvController extends Controller
         foreach ($place_delete as $p_d) {
             $flag_delete = true;
             for ($i = 0; $i < sizeof($place); $i++) { 
-                if($p_d->place->place_name == $place[$i]) {
+                if ($p_d->place->place_name == $place[$i]) {
                     $flag_delete = false;
                 }
             } 
-            if($flag_delete == true){
+            if ($flag_delete == true) {
                 RoadmapPlace::find($p_d->id)->delete();
             }
         }    
@@ -102,7 +97,7 @@ class HdvController extends Controller
             $place_check = Place::where('place_name', $place[$i])->first();
 
             $roadmap_place = RoadmapPlace::where([['roadmap_id', $id], ['place_id', $place_check->id]])->get();
-            if($roadmap_place->count() == 0 ) {
+            if ($roadmap_place->count() == 0 ) {
                 $request->merge([
                     'place_id' => $place_check->id,
                     'roadmap_id' => $id

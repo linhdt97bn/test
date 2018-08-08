@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Config;
 
 class LocaleMiddleware
 {
@@ -17,7 +16,7 @@ class LocaleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $language = \Session::get('website_language', config('app.locale'));
+        $language = Session::get('locale', config('app.locale'));
         config(['app.locale' => $language]);
         return $next($request);
     }

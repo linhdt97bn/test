@@ -16,20 +16,21 @@ use App\Rate;
 use App\Roadmap;
 use App\RoadmapPlace;
 use Illuminate\Support\Facades\Session;
+
 class PageController extends Controller
 {
     
-    public function getTrangChu()
+    public function home()
     {
         $tour=Tour::where('status', 1)->paginate(12);
         return view('client.page_client.trangchu', compact('tour'));
     }
 
-    public function postDangKy(DangKyRequest $req)
+    public function register(DangKyRequest $req)
     {
     	for ($i=0; $i < strlen($req->phone); $i++) { 
             if (!((0 < $req->phone[$i] && $req->phone[$i] <= 9) || $req->phone[$i] === '0')) {
-                return redirect()->back()->with('error_phone', 'Kiểm tra lại số điện thoại.');
+                return redirect()->back()->with('error_phone', trans('i18n.session.error_phone'));
             } 
     	}
         $password = $req->password;
@@ -45,23 +46,23 @@ class PageController extends Controller
         return redirect()->back();   
     }
 
-    public function postDangNhap(DangNhapRequest $req)
+    public function login(DangNhapRequest $req)
     {
         $check_user = ['email' => $req->email, 'password' => $req->password];
         if(Auth::attempt($check_user, $req->ghinho)){
             return redirect()->back();
         }else{
-            return redirect()->back()->with('error_login', 'Sai tài khoản hoặc mật khẩu!');
+            return redirect()->back()->with('error_login', trans('i18n.session.error_login'));
         }
     }
 
-    public function getDangXuat()
+    public function logout()
     {
         Auth::logout();
         return redirect()->route('trang-chu');
     }
 
-    public function getTourDiaDiem($iddd)
+    public function tourPlace($iddd)
     {
         $place_id = RoadmapPlace::tourPlace($iddd);
         $tour_id = Roadmap::getDistinctTourId($place_id);
@@ -69,15 +70,17 @@ class PageController extends Controller
         return view('client.page_client.danhsachtour', compact('tour_place'));
     } 
 
-    public function getTourCuaHdv($idhdv)
+    public function tourHDV($idhdv)
     {
         $tour_hdv = Tour::where([['users_id', $idhdv], ['status', 1]])->paginate(12);
         return view('client.page_client.danhsachtour', compact('tour_hdv'));
     }
 
-    public function getDanhGia($idtour, Request $request)
+    public function rate($idtour, Request $request)
     {
-        if($request->sodiem == 0) return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
+        if ($request->sodiem == 0) {
+            return redirect()->back()->with('errorRate', trans('i18n.session.error_rate'));
+        }
 
         $flag = false;
         $tour = Tour::find($idtour);
@@ -93,7 +96,7 @@ class PageController extends Controller
         if ($flag) {
             $rate = Rate::where([['tour_id', $tour->id], ['users_id', Auth::user()->id]])->get();
             if (count($rate) > 0) {
-                return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
+                return redirect()->back()->with('errorRate', trans('i18n.session.error_rate'));
             }else {
                 $request->merge([
                     'tour_id' => $idtour,
@@ -101,14 +104,14 @@ class PageController extends Controller
                     'point' => $request->sodiem
                 ]);
                 Rate::create($request->all());
-                return redirect()->back()->with('successRate', 'Cảm ơn bạn đã đánh giá tour');
+                return redirect()->back()->with('successRate', trans('i18n.session.success_rate'));
             }        
-        }else {
-            return redirect()->back()->with('errorRate', 'Lỗi đánh giá!');
+        } else {
+            return redirect()->back()->with('errorRate', trans('i18n.session.error_rate'));
         }
     }
 
-    public function getTimkiem(Request $request)
+    public function search(Request $request)
     {
         $tk = $request->input('timkiem');
         $tour_search = Tour::search($tk)->paginate(12);
@@ -116,51 +119,51 @@ class PageController extends Controller
         return view('client.page_client.danhsachtour', compact('tour_search'));
     }
 
-    public function postSuaThongTin(SuaNguoiDungRequest $request)
+    public function editUser(SuaNguoiDungRequest $request)
     {
         $user = Auth::user();
 
         for ($i=0; $i < strlen($request->phone); $i++) { 
             if (!((0 < $request->phone[$i]  && $request->phone[$i] <= 9 ) || $request->phone[$i] === '0')) {
-                return redirect()->back()->with('error_edit_phone', 'Kiểm tra lại số điện thoại.');
+                return redirect()->back()->with('error_edit_phone', trans('i18n.session.error_phone'));
             }
         }
 
         if (is_numeric($request->birthday)) {
             $y = date('Y');
             if (!(($y - $request->birthday <= 100) && ($y - $request->birthday >= 3))) {
-                return redirect()->back()->with('error_birthday', 'Vui lòng nhập đúng năm sinh');
+                return redirect()->back()->with('error_birthday', trans('i18n.session.error_birthday'));
             }
         }
     
         if ($request->hasFile('anhdaidien')) {
-            $file = $request->file('anhdaidien');
+            $file = $request->file('avatar');
             $duoi = $file->getClientOriginalExtension();
-            if($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg"){
-                return redirect()->back()->with('error_avatar', 'Định dạng ảnh phải là jpg, png, jpeg');
+            if ($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg") {
+                return redirect()->back()->with('error_avatar', trans('i18n.session.error_image'));
             }
 
             $name = $file->getClientOriginalName();
-            $anhdaidien= str_random(4)."_".$name;
-            while(file_exists("upload".$anhdaidien)){
-                $anhdaidien= str_random(4)."_".$name;
+            $avatar = str_random(4) . "_" . $name;
+            while (file_exists("upload" . $avatar)) {
+                $avatar = str_random(4) . "_" . $name;
             } 
 
-            $file->move("upload", $anhdaidien); 
-            $request->merge(['avatar' => $anhdaidien]);  
+            $file->move("upload", $avatar); 
+            $request->merge(['avatar' => $avatar]);  
         }
 
-        if($request->checkpassword == "on"){
+        if ($request->checkpassword == "on") {
             $request->merge(['password' => bcrypt($request->password)]);
         }
 
         $user->update($request->all());
-        return redirect()->back()->with('success_edit_user', 'Sửa thông tin thành công');
+        return redirect()->back()->with('success_edit_user', trans('i18n.session.success_edit_user'));
     }
 
-    public function changeLanguage($language)
+    public function changeLanguage($language, Request $request)
     {
-        \Session::put('website_language', $language);
+        $request->session()->put('locale', $language);
         return redirect()->back();
     }
 }

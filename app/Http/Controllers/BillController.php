@@ -117,10 +117,10 @@ class BillController extends Controller
             }
             $bill->update(['status' => 4]);
             return redirect()->back()->with('confirm_finish','Xác nhận thành công.');
-        }else {
+        } else {
             if (!(Auth::user()->id == $bill->tour->users_id && $bill->status == 0)) {
                 return redirect()->back();
-            }elseif ($request->status == 2) {
+            } elseif ($request->status == 2) {
                 $this->validate($request,
                     [
                         'response' => 'required'
@@ -134,7 +134,7 @@ class BillController extends Controller
                     return back();
                 }
                 return redirect()->back()->with('disagree_success','Từ chối thành công.');
-            }elseif ($request->status == 1) {
+            } elseif ($request->status == 1) {
                 $bill->update(['status' => 1]);
                 if (\Notification::send($user, new BillNotification($bill, ''))) {
                     return back();

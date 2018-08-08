@@ -15,14 +15,14 @@ Route::group(['middleware' => 'locale'], function() {
     Route::get('change-language/{language}', ['as' => 'language', 'uses' => 'PageController@changeLanguage']);
 });
 
-Route::get('/', ['as' => 'trang-chu', 'uses' => 'PageController@getTrangChu']);
+Route::get('/', ['as' => 'trang-chu', 'uses' => 'PageController@home']);
 
-Route::post('dang-ky', ['as' => 'dang-ky', 'uses' => 'PageController@postDangKy']);
-Route::post('dang-nhap', ['as' => 'dang-nhap', 'uses' => 'PageController@postDangNhap']);
-Route::get('dang-xuat', ['as' => 'dang-xuat', 'uses' => 'PageController@getDangXuat']);
+Route::post('dang-ky', ['as' => 'dang-ky', 'uses' => 'PageController@register']);
+Route::post('dang-nhap', ['as' => 'dang-nhap', 'uses' => 'PageController@login']);
+Route::get('dang-xuat', ['as' => 'dang-xuat', 'uses' => 'PageController@logout']);
 
-Route::get('tour-dia-diem/{iddd}', ['as' => 'tour-dia-diem', 'uses' => 'PageController@getTourDiaDiem']);
-Route::get('tour-cua-hdv/{idhdv}', ['as' => 'tour_hdv', 'uses' => 'PageController@getTourCuaHdv']);
+Route::get('tour-dia-diem/{iddd}', ['as' => 'tour-dia-diem', 'uses' => 'PageController@tourPlace']);
+Route::get('tour-cua-hdv/{idhdv}', ['as' => 'tour_hdv', 'uses' => 'PageController@tourHDV']);
 
 Route::get('chi-tiet/{id}', ['as' => 'chi-tiet', 'uses' => 'TourController@show']);
 
@@ -31,9 +31,9 @@ Route::get('lich-su-dat-tour', ['as' => 'lich-su', 'uses' => 'BillController@ind
 
 Route::resource('payment', 'PaymentController', ['only' => ['create', 'store']]);
 
-Route::post('danh-gia/{idtour}', ['as' => 'danh-gia', 'uses' => 'PageController@getDanhGia']);
-Route::post('sua-thong-tin', ['as' => 'sua-thong-tin', 'uses' => 'PageController@postSuaThongTin']);
-Route::get('tim-kiem', ['as' => 'tim-kiem', 'uses' => 'PageController@getTimKiem']);
+Route::post('danh-gia/{idtour}', ['as' => 'danh-gia', 'uses' => 'PageController@rate']);
+Route::post('sua-thong-tin', ['as' => 'sua-thong-tin', 'uses' => 'PageController@editUser']);
+Route::get('tim-kiem', ['as' => 'tim-kiem', 'uses' => 'PageController@search']);
 
 //xu ly ajax
 Route::post('binhluan', 'AjaxController@postBinhLuan');
@@ -52,16 +52,15 @@ Route::post('/markAsRead', 'BillController@markAsRead');
 
 //--------------------HDV------------------
 Route::group(['prefix' => 'hdv','middleware' => 'CheckHDV'], function(){
-    Route::get('trang-chu', ['as' => 'trang-chu-hdv', 'uses' => 'HdvController@trangchu']);
+    Route::get('trang-chu', ['as' => 'trang-chu-hdv', 'uses' => 'HdvController@home']);
     Route::resource('tour', 'TourController');
-    Route::post('anhienTour/{id}', ['as' => 'anhienTour','uses' => 'TourController@anhienTour']);
-    Route::post('xoatour/{id}', ['as' => 'xoatour','uses' => 'HdvController@postXoaTour']);
+    Route::post('anhienTour/{id}', ['as' => 'anhienTour', 'uses' => 'TourController@hideShowTour']);
 
     Route::resource('edit-bill', 'BillController', ['only' => 'update']);
-    Route::get('list-bill', ['as' => 'list-bill', 'uses' => 'HdvController@getListBill']);
+    Route::get('list-bill', ['as' => 'list-bill', 'uses' => 'HdvController@listBill']);
 
-    Route::post('them-lo-trinh', 'HdvController@postThemLoTrinh');
-    Route::post('sua-lo-trinh/{id}', 'HdvController@postSuaLoTrinh');
+    Route::post('them-lo-trinh', 'HdvController@addRoadmap');
+    Route::post('sua-lo-trinh/{id}', 'HdvController@editRoadmap');
 
 });
 

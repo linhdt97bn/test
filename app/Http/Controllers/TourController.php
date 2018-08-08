@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TaoTourRequest;
 use App\Http\Requests\SuaTourRequest;
-use App\Tour;
+use App\Repositories\RepositoryInterface;
 use App\User;
 use App\Bill;
 use App\Comment;
@@ -17,38 +17,45 @@ use Auth;
 
 class TourController extends Controller
 {
+
+    protected $tourRepository;
+
+    public function __construct(RepositoryInterface $tourRepository)
+    {
+        $this->tourRepository = $tourRepository;
+    }
     
     public function index()
     {
-        $tour = Tour::where('users_id', Auth::user()->id)->get();
+        $tour = $this->tourRepository->where('users_id', Auth::user()->id)->get();
         return view('hdv.page_hdv.danhsachtour', compact('tour'));
     }
 
     public function create()
     {
         $diadiem = Place::where('parent_id', '<>', 0)->get();
-        return view('hdv.page_hdv.themtour',compact('diadiem'));
+        return view('hdv.page_hdv.themtour', compact('diadiem'));
     }
 
     public function store(TaoTourRequest $request)
     {       
-        if($request->hasFile('hinhanh')){
+        if ($request->hasFile('hinhanh')) {
             $file = $request->file('hinhanh');
             $duoi = $file->getClientOriginalExtension();
-            if($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg"){
-                return redirect()->back()->with('loi','Định dạng ảnh phải là jpg, png, jpeg');
+            if ($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg") {
+                return redirect()->back()->with('loi', 'Định dạng ảnh phải là jpg, png, jpeg');
             }
 
             $name = $file->getClientOriginalName();
-            $hinhanh= str_random(4)."_".$name;
-            while(file_exists("upload".$hinhanh)){
-                $hinhanh= str_random(4)."_".$name;
+            $hinhanh = str_random(4) . "_" . $name;
+            while (file_exists("upload" . $hinhanh)) {
+                $hinhanh = str_random(4) . "_" . $name;
             }
             
-            $file->move("upload",$hinhanh);
+            $file->move("upload", $hinhanh);
             $request->merge(['image_tour' => $hinhanh]);
-        }else {
-            return redirect()->back()->with('loi','Hình ảnh không đưọc để trống');
+        } else {
+            return redirect()->back()->with('loi', 'Hình ảnh không đưọc để trống');
         }   
         $request->merge([
             'users_id' => Auth::user()->id,
@@ -56,9 +63,9 @@ class TourController extends Controller
             'customer_max' => $request->sokhachtoida,
             'price' => $request->giatour
         ]);
-        $tour = Tour::create($request->all());
+        $tour = $this->tourRepository->create($request->all());
         
-        if($request->songaydi >= 1){
+        if ($request->songaydi >= 1) {
             $request->merge([
                 'tour_id' => $tour->id,
                 'description' => $request->ngay1
@@ -75,7 +82,7 @@ class TourController extends Controller
                 RoadmapPlace::create($request->only('place_id', 'roadmap_id'));
             } 
         }
-        if($request->songaydi >= 2){
+        if ($request->songaydi >= 2) {
             $request->merge([
                 'tour_id' => $tour->id,
                 'description' => $request->ngay2
@@ -92,7 +99,7 @@ class TourController extends Controller
                 RoadmapPlace::create($request->only('place_id', 'roadmap_id'));
             } 
         }
-        if($request->songaydi >= 3){
+        if ($request->songaydi >= 3) {
             $request->merge([
                 'tour_id' => $tour->id,
                 'description' => $request->ngay3
@@ -109,7 +116,7 @@ class TourController extends Controller
                 RoadmapPlace::create($request->only('place_id', 'roadmap_id'));
             } 
         }
-        if($request->songaydi >= 4){
+        if ($request->songaydi >= 4) {
             $request->merge([
                 'tour_id' => $tour->id,
                 'description' => $request->ngay4
@@ -126,7 +133,7 @@ class TourController extends Controller
                 RoadmapPlace::create($request->only('place_id', 'roadmap_id'));
             } 
         }
-        if($request->songaydi >= 5){
+        if ($request->songaydi >= 5) {
             $request->merge([
                 'tour_id' => $tour->id,
                 'description' => $request->ngay5
@@ -144,15 +151,15 @@ class TourController extends Controller
             } 
         }
 
-        return redirect()->back()->with('thanhcong','Thêm tour thành công');
+        return redirect()->back()->with('success_add_tour', trans('i18n.session.success_add_tour'));
     }
 
     public function show($id)
     {
-        $cttour = Tour::find($id);
-        $tourmoi = Tour::orderBy('created_at', 'desc')->take(6)->get();
-        if($cttour){
-            $tour_lien_quan = Tour::where('users_id', $cttour->users_id)->get();
+        $cttour = $this->tourRepository->find($id);
+        $tourmoi = $this->tourRepository->getNewTour();
+        if ($cttour) {
+            $tour_lien_quan = $this->tourRepository->where('users_id', $cttour->users_id)->get();
         }  
         
         return view('client.page_client.chitiettour', compact('cttour', 'tourmoi', 'tour_lien_quan'));
@@ -160,25 +167,26 @@ class TourController extends Controller
 
     public function edit($id)
     {
-        $edit_tour = Tour::find($id);
+        $edit_tour = $this->tourRepository->find($id);
         $diadiem = Place::where('parent_id', '<>', 0)->get();
-        return view('hdv.page_hdv.themtour',compact('diadiem', 'edit_tour'));
+        return view('hdv.page_hdv.themtour', compact('diadiem', 'edit_tour'));
     }
 
-    public function update(SuaTourRequest $request, Tour $tour)
+    public function update(SuaTourRequest $request, $id)
     {
-        if($request->hasFile('hinhanh')){
+        $tour = $this->tourRepository->find($id);
+        if ($request->hasFile('hinhanh')) {
             $file = $request->file('hinhanh');
             $duoi = $file->getClientOriginalExtension();
-            if($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg"){
-                return redirect()->back()->with('loi','Định dạng ảnh phải là jpg,png,jpeg');
+            if ($duoi != 'jpg' && $duoi != "png" && $duoi != "jpeg") {
+                return redirect()->back()->with('error_image', trans('i18n.session.error_image'));
             }
             $name = $file->getClientOriginalName();
-            $hinhanh = str_random(4)."_".$name;
-            while(file_exists("upload".$hinhanh)){
-                $hinhanh = str_random(4)."_".$name;
+            $hinhanh = str_random(4) . "_" . $name;
+            while(file_exists("upload" . $hinhanh)){
+                $hinhanh = str_random(4) . "_" . $name;
             }         
-            $file->move("upload",$hinhanh); 
+            $file->move("upload", $hinhanh); 
             $request->merge(['image_tour' => $hinhanh]);
         }
 
@@ -189,19 +197,18 @@ class TourController extends Controller
         ]);
 
         $tour->update($request->all());
-        return redirect('hdv/tour')->with('thongbao','Sửa tour thành công');
+        return redirect()->back()->with('success_edit_tour', trans('i18n.session.success_edit_tour'));
     }
 
-    public function anhienTour($id)
+    public function hideShowTour($id)
     {
-        $tour = Tour::find($id);
-        if($tour->status == 1){
+        $tour = $this->tourRepository->find($id);
+        if ($tour->status == 1) {
             $tour->update(['status' => 0]);
-            return redirect()->back()->with('thongbao','Ẩn tour thành công');
-        }
-        else{
+            return redirect()->back()->with('success_hide_tour', trans('i18n.session.success_hide_tour'));
+        } else {
             $tour->update(['status' => 1]);
-            return redirect()->back()->with('thongbao','Hiện tour thành công');
+            return redirect()->back()->with('success_show_tour', trans('i18n.session.success_show_tour'));
         }    
     }
 }
